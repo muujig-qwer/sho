@@ -1,0 +1,111 @@
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+export const register = async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const exist = await User.findOne({ email });
+    if (exist) return res.status(400).json({ message: 'Email already exists' });
+
+    const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashed });
+    await user.save();
+
+    res.status(201).json({ message: 'Registered successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: 'Wrong password' });
+
+    const token = jwt.sign({ id: user._id , role: user.role }, process.env.JWT_SECRET);
+    res.json({ token, user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return res.status(404).json({ message: 'Хэрэглэгч олдсонгүй' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Серверийн алдаа' });
+  }
+};
+
+
+export const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'Хэрэглэгч олдсонгүй' });
+
+    if (req.body.name) user.name = req.body.name;
+    if (req.file) user.image = req.file.filename;
+
+    await user.save();
+
+    res.json({ message: 'Профайл амжилттай шинэчлэгдлээ', user: { 
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      image: user.image
+    }});
+  } catch (err) {
+    res.status(500).json({ message: 'Серверийн алдаа' });
+  }
+};
+
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select()  // нууц үг харуулахгүй
+    res.json(users)
+  } catch (error) {
+    res.status(500).json({ message: 'Серверийн алдаа' })
+  }
+}
+
+
+export const createAdmin = async (req, res) => {
+  try {
+    // Үүсгэх admin-ийн мэдээлэл request-оос авах
+    const { name, email, password } = req.body;
+
+    // Хэрэглэгч байгаа эсэхийг шалгах
+    const exist = await User.findOne({ email });
+    if (exist) return res.status(400).json({ message: 'Email already exists' });
+
+    // Нууц үгийг хэшлэх
+    const hashed = await bcrypt.hash(password, 10);
+
+    // Шинэ админ хэрэглэгч үүсгэх
+    const adminUser = new User({
+      name,
+      email,
+      password: hashed,
+      role: 'admin',
+    });
+
+    await adminUser.save();
+
+    res.status(201).json({ message: 'Admin user created successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+

@@ -3,13 +3,14 @@ import Order from '../models/Order.js';
 export const createOrder = async (req, res) => {
   try {
     const order = new Order({
-      user: req.user._id, // Заавал user-г холбоно!
+      user: req.user._id,
       products: req.body.products,
       totalPrice: req.body.totalPrice,
     })
     await order.save()
     res.status(201).json(order)
   } catch (err) {
+    console.error(err) // Алдааг терминалдаа харна уу!
     res.status(500).json({ message: 'Захиалга үүсгэхэд алдаа гарлаа' })
   }
 };

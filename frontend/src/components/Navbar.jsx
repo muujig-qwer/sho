@@ -3,9 +3,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { jwtDecode } from 'jwt-decode'
-
-// react-icons-аас icon-уудаа импортлоно
-import { FaMale, FaFemale, FaChild, FaBoxOpen, FaShoppingCart, FaClipboardList, FaUser, FaSignInAlt, FaUserPlus, FaSignOutAlt, FaTachometerAlt, FaBoxes } from 'react-icons/fa'
+import {
+  FaMale, FaFemale, FaChild, FaBoxOpen, FaShoppingCart,
+  FaClipboardList, FaUser, FaSignInAlt, FaUserPlus,
+  FaSignOutAlt, FaTachometerAlt, FaBoxes, FaChevronDown
+} from 'react-icons/fa'
 
 function IconLink({ href, Icon, tooltip }) {
   return (
@@ -24,16 +26,17 @@ export default function Navbar() {
   const [role, setRole] = useState('')
   const [userName, setUserName] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [menDropdownOpen, setMenDropdownOpen] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      setIsLoggedIn(true)
       try {
         const decoded = jwtDecode(token)
+        setIsLoggedIn(true)
         setRole(decoded.role || '')
         setUserName(decoded.name || '')
-      } catch (error) {
+      } catch {
         setIsLoggedIn(false)
         setRole('')
         setUserName('')
@@ -51,9 +54,48 @@ export default function Navbar() {
     window.location.href = '/login'
   }
 
+  useEffect(() => {
+    if (!menDropdownOpen) return
+    const handleClick = (e) => {
+      if (!e.target.closest('#men-dropdown-parent')) {
+        setMenDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [menDropdownOpen])
+
+  const menSubcategories = [
+    {
+      title: 'Гутал',
+      items: [
+        { name: 'Пүүз', href: '/men/shoes/sneakers' },
+        { name: 'Арьсан гутал', href: '/men/shoes/leather' },
+        { name: 'Сандаал', href: '/men/shoes/sandals' },
+      ],
+    },
+    {
+      title: 'Хувцас',
+      items: [
+        { name: 'Футболк', href: '/men/clothes/tshirts' },
+        { name: 'Өмд', href: '/men/clothes/pants' },
+        { name: 'Куртик', href: '/men/clothes/jackets' },
+      ],
+    },
+    {
+      title: 'Дагалдах',
+      items: [
+        { name: 'Малгай', href: '/men/accessories/hats' },
+        { name: 'Цүнх', href: '/men/accessories/bags' },
+        { name: 'Бүс', href: '/men/accessories/belts' },
+      ],
+    },
+  ]
+
   return (
-    <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md shadow-md border-b border-gray-200 border border-red-500">
+    <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md shadow-md border-b">
       <div className="max-w-full flex items-center justify-between h-16 px-4 relative">
+
         {/* Mobile hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -62,21 +104,56 @@ export default function Navbar() {
           <FaBoxOpen className="h-7 w-7" />
         </button>
 
-        {/* Зүүн icon-ууд (desktop-д харагдана) */}
+        {/* Зүүн icon-ууд (desktop) */}
         <div className="hidden sm:flex gap-6 items-center">
-          <IconLink href="/men" Icon={FaMale} tooltip="Эрэгтэй" />
+          <div id="men-dropdown-parent" className="relative">
+            <button
+              onClick={() => setMenDropdownOpen((v) => !v)}
+              className="flex items-center gap-1 group focus:outline-none"
+            >
+              <FaMale className="h-7 w-7 transition-transform duration-200 group-hover:scale-110" />
+              <span className="text-sm font-semibold"></span>
+              <FaChevronDown className={`h-4 w-4 transition-transform ${menDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {menDropdownOpen && (
+              <div className="absolute left-0 right-0 top-[100%] mt-2 w-screen -ml-4 bg-white border-t border-b shadow-2xl z-50 py-8">
+                <div className="max-w-7xl mx-auto px-8">
+                  <div className="flex flex-row gap-12 justify-center">
+                    {menSubcategories.map((cat) => (
+                      <div key={cat.title} className="flex-1 max-w-xs">
+                        <div className="font-bold text-gray-900 mb-4 text-xl border-b border-gray-200 pb-3">{cat.title}</div>
+                        <ul className="space-y-2">
+                          {cat.items.map((item) => (
+                            <li key={item.href}>
+                              <Link
+                                href={item.href}
+                                className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium"
+                                onClick={() => setMenDropdownOpen(false)}
+                              >
+                                {item.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
           <IconLink href="/women" Icon={FaFemale} tooltip="Эмэгтэй" />
           <IconLink href="/kids" Icon={FaChild} tooltip="Хүүхэд" />
         </div>
 
-        {/* Лого - төвд байрлана */}
+        {/* Төв лого */}
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <Link href="/" className="text-gray-900 text-2xl font-extrabold tracking-tight hover:text-blue-700 transition">
             My E-Shop
           </Link>
         </div>
 
-        {/* Баруун icon-ууд (desktop) */}
+        {/* Баруун icon-ууд */}
         <div className="hidden sm:flex gap-4 items-center">
           <IconLink href="/products" Icon={FaBoxOpen} tooltip="Бүтээгдэхүүн" />
 

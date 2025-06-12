@@ -99,9 +99,11 @@ export default function CategoryListPage() {
           className="border p-2 rounded"
         >
           <option value="">Эцэг ангилалгүй</option>
-          {categories.map(cat => (
-            <option key={cat._id} value={cat._id}>{cat.name}</option>
-          ))}
+          {categories
+            .filter(cat => !cat.parent) // Зөвхөн үндсэн (эцэггүй) ангиллуудыг харуулна
+            .map(cat => (
+              <option key={cat._id} value={cat._id}>{cat.name}</option>
+            ))}
         </select>
         <button
           type="submit"

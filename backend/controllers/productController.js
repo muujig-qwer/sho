@@ -1,4 +1,23 @@
 import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+
+export const getProductsBySlugs = async (req, res) => {
+  try {
+    const { parentSlug, childSlug } = req.params;
+
+    const parent = await Category.findOne({ slug: parentSlug });
+    if (!parent) return res.status(404).json({ message: 'Parent not found' });
+
+    const child = await Category.findOne({ slug: childSlug, parent: parent._id });
+    if (!child) return res.status(404).json({ message: 'Child not found' });
+
+    const products = await Product.find({ category: child._id }).populate('category');
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 export const createProduct = async (req, res) => {
   try {

@@ -1,28 +1,24 @@
 import Product from '../models/Product.js';
 
 export const createProduct = async (req, res) => {
-  const { name, price } = req.body
-  const image = req.file ? req.file.filename : ''
-
-  const product = new Product({
-    name,
-    price,
-    image, // Save filename only
-  })
-
-  await product.save()
-  res.status(201).json(product)
-}
-
-
-export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category');
-    res.json(products);
+    const { name, price, description, image, category } = req.body;
+    const product = await Product.create({ name, price, description, image, category });
+    res.status(201).json(product);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+export const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find().populate('category', 'name')
+    res.json(products)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
 
 export const getProduct = async (req, res) => {
   try {
@@ -51,3 +47,12 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getProductsByCategory = async (req, res) => {
+  try {
+    const products = await Product.find({ category: req.params.categoryId }).populate('category', 'name')
+    res.json(products)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}

@@ -4,7 +4,8 @@ import {
   getProducts,
   getProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductsByCategory
 } from '../controllers/productController.js';
 
 import upload from '../middleware/uploadMiddleware.js'
@@ -16,5 +17,6 @@ router.get('/', getProducts);
 router.get('/:id', getProduct);
 router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
+router.get('/category/:categoryId', getProductsByCategory)
 
 export default router;

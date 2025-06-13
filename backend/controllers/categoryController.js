@@ -1,11 +1,17 @@
 import Category from '../models/Category.js';
 
+
 export const createCategory = async (req, res) => {
   try {
-    const category = await Category.create(req.body);
+    const { name, parent } = req.body;
+    const category = new Category({
+      name,
+      parent: parent || null,
+    });
+    await category.save();
     res.status(201).json(category);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

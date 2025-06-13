@@ -5,7 +5,7 @@ import axios from 'axios'
 export default function CategoryListPage() {
   const [categories, setCategories] = useState([])
   const [newCategory, setNewCategory] = useState('')
-  const [parentId, setParentId] = useState('')
+  const [parent, setParent] = useState('')
   const [editId, setEditId] = useState('')
   const [editName, setEditName] = useState('')
   const [editParentId, setEditParentId] = useState('')
@@ -27,11 +27,11 @@ export default function CategoryListPage() {
     try {
       await axios.post(
         'http://localhost:5000/api/categories',
-        { name: newCategory, parent: parentId || null },
+        { name: newCategory, parent: parent || null },
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setNewCategory('')
-      setParentId('')
+      setParent('')
       fetchCategories()
     } catch {
       alert('Ангилал нэмэхэд алдаа гарлаа')
@@ -94,16 +94,14 @@ export default function CategoryListPage() {
           className="border p-2 rounded flex-1"
         />
         <select
-          value={parentId}
-          onChange={e => setParentId(e.target.value)}
+          value={parent}
+          onChange={e => setParent(e.target.value)}
           className="border p-2 rounded"
         >
           <option value="">Эцэг ангилалгүй</option>
-          {categories
-            .filter(cat => !cat.parent) // Зөвхөн үндсэн (эцэггүй) ангиллуудыг харуулна
-            .map(cat => (
-              <option key={cat._id} value={cat._id}>{cat.name}</option>
-            ))}
+          {categories.map(cat => (
+            <option key={cat._id} value={cat._id}>{cat.name}</option>
+          ))}
         </select>
         <button
           type="submit"
@@ -113,6 +111,8 @@ export default function CategoryListPage() {
         </button>
       </form>
 
+      {/* Category жагсаалт */}
+      <ul className="space-y-2"></ul>
       {/* Category жагсаалт */}
       <ul className="space-y-2">
         {categories.map(cat => (

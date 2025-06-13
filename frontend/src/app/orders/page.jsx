@@ -30,7 +30,15 @@ export default function OrdersPage() {
             <ul className="mt-2 list-disc pl-5">
               {order.products.map((p, idx) => (
                 <li key={idx}>
-                  {p.product.name} — {p.quantity} ширхэг
+                  {p.product && p.product.name ? (
+                    <>
+                      {p.product.name} — {p.quantity} ширхэг
+                    </>
+                  ) : (
+                    <>
+                      Бүтээгдэхүүний мэдээлэл олдсонгүй — {p.quantity} ширхэг
+                    </>
+                  )}
                 </li>
               ))}
             </ul>

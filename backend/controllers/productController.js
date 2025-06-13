@@ -1,22 +1,26 @@
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
+import mongoose from 'mongoose'
 
-export const getProductsBySlugs = async (req, res) => {
+export const getProductsByCategoryId = async (req, res) => {
   try {
-    const { parentSlug, childSlug } = req.params;
+    const { categoryId } = req.params
+    console.log('Ирсэн categoryId:', categoryId)
 
-    const parent = await Category.findOne({ slug: parentSlug });
-    if (!parent) return res.status(404).json({ message: 'Parent not found' });
+    const products = await Product.find({
+      category: new mongoose.Types.ObjectId(categoryId),
+    })
 
-    const child = await Category.findOne({ slug: childSlug, parent: parent._id });
-    if (!child) return res.status(404).json({ message: 'Child not found' });
+    console.log('Олдсон products:', products)
 
-    const products = await Product.find({ category: child._id }).populate('category');
-    res.json(products);
+    res.json(products)
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Сервер алдаа:', err.message)
+    res.status(500).json({ message: 'Алдаа гарлаа', error: err.message })
   }
-};
+}
+
+
 
 
 export const createProduct = async (req, res) => {
@@ -67,11 +71,3 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-export const getProductsByCategory = async (req, res) => {
-  try {
-    const products = await Product.find({ category: req.params.categoryId }).populate('category', 'name')
-    res.json(products)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-}

@@ -7,15 +7,16 @@ export default function SneakersPage() {
   const [products, setProducts] = useState([])
 
   useEffect(() => {
-    // Та энд API-г өөрийн backend-д тааруулж өөрчилж болно
-    axios.get('http://localhost:5000/api/products/category/eregtei/sneakers')
-  .then(res => setProducts(res.data))
-
+    axios
+      .get('http://localhost:5000/api/products/category/id/684bc588f59e63f0ff538f41')
+      .then(res => setProducts(res.data))
+      .catch(err => console.error('Алдаа: ', err))
   }, [])
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-6">Пүүз (Эрэгтэй)</h1>
+
       {products.length === 0 ? (
         <div>Бүтээгдэхүүн олдсонгүй.</div>
       ) : (

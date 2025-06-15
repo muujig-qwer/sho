@@ -6,6 +6,8 @@ import {
   updateProduct,
   deleteProduct,
   getProductsByCategoryId,
+  getProductComments,
+  addProductComment,
 } from '../controllers/productController.js';
 
 import upload from '../middleware/uploadMiddleware.js'
@@ -17,11 +19,21 @@ router.post('/upload', upload.single('image'), (req, res) => {
   res.json({ url: req.file.filename }); 
 });
 
-router.post('/', upload.single('image'), createProduct);
+router.post(
+  '/',
+  upload.array('images', 10), // 10 хүртэл зураг upload хийж болно
+  createProduct
+);
 router.get('/category/id/:categoryId', getProductsByCategoryId)
 router.get('/', getProducts);
 router.get('/:id', getProduct);
-router.put('/:id', updateProduct);
+router.get('/:id/comments', getProductComments);
+router.post('/:id/comments', addProductComment);
+router.put(
+  '/:id',
+  upload.array('images', 10), // Энэ мөрийг заавал нэм
+  updateProduct
+);
 router.delete('/:id', deleteProduct);
 
 export default router;

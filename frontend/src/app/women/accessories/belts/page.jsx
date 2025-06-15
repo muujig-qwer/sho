@@ -4,53 +4,53 @@ import axios from 'axios'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function SneakersPage() {
+export default function WomenBeltsPage() {
   const [products, setProducts] = useState([])
   const pathname = usePathname()
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/684e5413d3f5bb28ee3f810c') // ← шинэ ID
+      .get('http://localhost:5000/api/products/category/id/ТА_ЭМЭГТЭЙ_БҮС_АНГИЛЛЫН_ID') // ← энд эмэгтэй бүс ангиллын ID-г оруулна уу
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
 
-  const menSubcategories = [
+  const womenSubcategories = [
     {
       title: 'Гутал',
       items: [
-        { name: 'Пүүз', href: '/men/shoes/sneakers' },
-        { name: 'Арьсан гутал', href: '/men/shoes/leather' },
-        { name: 'Сандаал', href: '/men/shoes/sandals' },
+        { name: 'Пүүз', href: '/women/shoes/sneakers' },
+        { name: 'Туфль', href: '/women/shoes/heels' },
+        { name: 'Сандаал', href: '/women/shoes/sandals' },
       ],
     },
     {
       title: 'Хувцас',
       items: [
-        { name: 'Футболк', href: '/men/clothes/tshirts' },
-        { name: 'Өмд', href: '/men/clothes/pants' },
-        { name: 'Куртик', href: '/men/clothes/jackets' },
+        { name: 'Даашинз', href: '/women/clothes/dresses' },
+        { name: 'Юбка', href: '/women/clothes/skirts' },
+        { name: 'Цамц', href: '/women/clothes/shirts' },
       ],
     },
     {
       title: 'Дагалдах',
       items: [
-        { name: 'Малгай', href: '/men/accessories/hats' },
-        { name: 'Цүнх', href: '/men/accessories/bags' },
-        { name: 'Бүс', href: '/men/accessories/belts' },
+        { name: 'Малгай', href: '/women/accessories/hats' },
+        { name: 'Цүнх', href: '/women/accessories/bags' },
+        { name: 'Бүс', href: '/women/accessories/belts' },
       ],
     },
   ]
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Эрэгтэй – Пүүз</h1>
+      <h1 className="text-3xl font-bold mb-8">Эмэгтэй – Бүс</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Зүүн Sidebar */}
         <aside className="md:col-span-1">
           <nav className="space-y-6">
-            {menSubcategories.map((section, idx) => (
+            {womenSubcategories.map((section, idx) => (
               <div key={idx}>
                 <h2 className="text-lg font-semibold mb-2">{section.title}</h2>
                 <ul className="space-y-1">
@@ -60,8 +60,8 @@ export default function SneakersPage() {
                         href={item.href}
                         className={`block px-2 py-1 rounded ${
                           pathname === item.href
-                            ? 'bg-black text-white'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            ? 'bg-pink-600 text-white'
+                            : 'text-gray-700 hover:bg-pink-50'
                         }`}
                       >
                         {item.name}

@@ -4,53 +4,44 @@ import axios from 'axios'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function SneakersPage() {
+export default function KidsAccessoriesPage() {
   const [products, setProducts] = useState([])
   const pathname = usePathname()
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/684e5413d3f5bb28ee3f810c') // ← шинэ ID
+      .get('http://localhost:5000/api/products/category/id/ТА_ХҮҮХДИЙН_ДАГАЛДАХ_АНГИЛЛЫН_ID') // ← энд хүүхдийн дагалдах ангиллын ID-г оруулна уу
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
 
-  const menSubcategories = [
+  const kidsSubcategories = [
     {
-      title: 'Гутал',
+      title: 'Хүүхэд',
       items: [
-        { name: 'Пүүз', href: '/men/shoes/sneakers' },
-        { name: 'Арьсан гутал', href: '/men/shoes/leather' },
-        { name: 'Сандаал', href: '/men/shoes/sandals' },
+        { name: 'Гутал', href: '/kids/shoes' },
+        { name: 'Хувцас', href: '/kids/clothes' },
+        { name: 'Дагалдах', href: '/kids/accessories' },
       ],
     },
     {
-      title: 'Хувцас',
+      title: 'Бусад',
       items: [
-        { name: 'Футболк', href: '/men/clothes/tshirts' },
-        { name: 'Өмд', href: '/men/clothes/pants' },
-        { name: 'Куртик', href: '/men/clothes/jackets' },
-      ],
-    },
-    {
-      title: 'Дагалдах',
-      items: [
-        { name: 'Малгай', href: '/men/accessories/hats' },
-        { name: 'Цүнх', href: '/men/accessories/bags' },
-        { name: 'Бүс', href: '/men/accessories/belts' },
+        { name: 'Спорт', href: '/others/sport' },
+        { name: 'Аялал', href: '/others/travel' },
       ],
     },
   ]
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Эрэгтэй – Пүүз</h1>
+      <h1 className="text-3xl font-bold mb-8">Хүүхэд – Дагалдах</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Зүүн Sidebar */}
         <aside className="md:col-span-1">
           <nav className="space-y-6">
-            {menSubcategories.map((section, idx) => (
+            {kidsSubcategories.map((section, idx) => (
               <div key={idx}>
                 <h2 className="text-lg font-semibold mb-2">{section.title}</h2>
                 <ul className="space-y-1">
@@ -60,8 +51,8 @@ export default function SneakersPage() {
                         href={item.href}
                         className={`block px-2 py-1 rounded ${
                           pathname === item.href
-                            ? 'bg-black text-white'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            ? 'bg-yellow-500 text-white'
+                            : 'text-gray-700 hover:bg-yellow-50'
                         }`}
                       >
                         {item.name}

@@ -1,90 +1,145 @@
-'use client'
-import { useCart } from '../../context/CartContext'
-import { useRouter } from 'next/navigation'
-import axios from 'axios'
-import React from 'react'
+"use client";
+import { useCart } from "../../context/CartContext";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import React from "react";
 
 type CartItem = {
-  _id: string
-  name: string
-  price: number
-  quantity: number
-}
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  size?: string;
+  image?: string;
+};
 
 export default function CartPage() {
   const { cartItems, removeFromCart, clearCart } = useCart() as {
-    cartItems: CartItem[]
-    removeFromCart: (id: string) => void
-    clearCart: () => void
-  }
-  const router = useRouter()
+    cartItems: CartItem[];
+    removeFromCart: (id: string, size?: string) => void;
+    clearCart: () => void;
+  };
+  const router = useRouter();
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   const handleOrder = async () => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
     if (!token) {
-      alert('Нэвтрэх шаардлагатай')
-      router.push('/login')
-      return
+      alert("Нэвтрэх шаардлагатай");
+      router.push("/login");
+      return;
     }
 
     try {
       const products = cartItems.map((item) => ({
         product: item._id,
         quantity: item.quantity,
-      }))
+        size: item.size,
+      }));
 
       await axios.post(
-        'http://localhost:5000/api/orders',
+        "http://localhost:5000/api/orders",
         { products, totalPrice: total },
         { headers: { Authorization: `Bearer ${token}` } }
-      )
-      router.push('/orders')
+      );
+      router.push("/orders");
     } catch (err) {
-      alert('Захиалга үүсгэхэд алдаа гарлаа')
+      alert("Захиалга үүсгэхэд алдаа гарлаа");
     }
-  }
+  };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
-        <span role="img" aria-label="cart">🛒</span> Миний сагс
+    <div className="max-w-3xl mx-auto mt-16 px-4">
+      <h1 className="text-3xl font-bold mb-8 flex items-center gap-3">
+        <span role="img" aria-label="cart" className="text-4xl">
+          🛒
+        </span>
+        Миний сагс
       </h1>
       {cartItems.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">
-          <p>Сагс хоосон байна</p>
+        <div className="text-center py-16 text-gray-400 bg-white rounded-xl shadow">
+          <p className="text-lg">Сагс хоосон байна</p>
+          <button
+            onClick={() => router.push("/")}
+            className="mt-6 px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition"
+          >
+            Дэлгүүрлэж эхлэх
+          </button>
         </div>
       ) : (
-        <div className="space-y-4">
-          {cartItems.map((item) => (
-            <div key={item._id} className="flex justify-between items-center border p-4 rounded shadow-sm bg-white">
-              <div>
-                <h2 className="font-semibold text-lg">{item.name}</h2>
-                <p className="text-gray-600">{item.price}₮ x {item.quantity}</p>
-              </div>
-              <button
-                onClick={() => removeFromCart(item._id)}
-                className="text-red-600 hover:underline font-medium"
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl shadow divide-y divide-gray-100">
+            {cartItems.map((item, idx) => (
+              <div
+                key={`${item._id}-${item.size || idx}`}
+                className="flex items-center gap-5 py-6 px-4 hover:bg-gray-50 transition group"
               >
-                Устгах
-              </button>
-            </div>
-          ))}
-          <div className="flex justify-between items-center mt-6">
-            <div className="font-bold text-xl">Нийт:</div>
-            <div className="font-bold text-2xl text-green-700">{total}₮</div>
+                {/* Зураг */}
+                {item.image && (
+                  <img
+                    src={
+                      item.image.startsWith("http")
+                        ? item.image
+                        : `http://localhost:5000/uploads/${item.image}`
+                    }
+                    alt={item.name}
+                    className="w-20 h-20 object-cover rounded-xl border bg-gray-100"
+                    onError={(e) => (e.currentTarget.src = "/fallback.jpg")}
+                  />
+                )}
+
+                {/* Барааны мэдээлэл */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="font-semibold text-lg truncate">{item.name}</h2>
+                    <button
+                      onClick={() => removeFromCart(item._id, item.size)}
+                      className="text-red-500 hover:bg-red-100 rounded-full p-2 transition opacity-0 group-hover:opacity-100"
+                      title="Устгах"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3 mt-2">
+                    {/* Хэмжээ */}
+                    <div className="text-gray-500 text-sm">
+                      <span className="bg-gray-100 px-2 py-0.5 rounded">
+                        {item.size ? `Хэмжээ: ${item.size}` : "Хэмжээ: -" }
+                      </span>
+                    </div>
+                    {/* Үнэ, тоо ширхэг */}
+                    <div className="text-gray-700 text-base font-medium">
+                      {item.price.toLocaleString()}₮
+                      <span className="mx-2 text-gray-400">×</span>
+                      {item.quantity}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex justify-end gap-4 mt-4">
+          <div className="flex justify-between items-center mt-8 px-2">
+            <div className="font-bold text-xl">Нийт:</div>
+            <div className="font-bold text-2xl text-green-700">
+              {total.toLocaleString()}₮
+            </div>
+          </div>
+          <div className="flex justify-end gap-4 mt-6">
             <button
               onClick={clearCart}
-              className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
+              className="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-200 transition font-medium"
             >
               Сагс хоослох
             </button>
             <button
               onClick={handleOrder}
-              className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 font-semibold"
+              className="bg-green-600 text-white px-8 py-2 rounded-lg hover:bg-green-700 font-semibold shadow transition"
             >
               Захиалах
             </button>
@@ -92,5 +147,5 @@ export default function CartPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

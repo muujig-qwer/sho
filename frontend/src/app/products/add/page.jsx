@@ -4,13 +4,17 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode'
 
+const defaultSizes = ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45']
+
 export default function AddProductPage() {
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState('')
+  const [images, setImages] = useState([]) // Файл зургууд
+  const [imageUrls, setImageUrls] = useState(['']) // URL зургууд
   const [categories, setCategories] = useState([])
   const [category, setCategory] = useState('')
+  const [sizes, setSizes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
   const router = useRouter()
 
@@ -33,15 +37,31 @@ export default function AddProductPage() {
   }, [router])
 
   useEffect(() => {
-    // Category-уудыг татах
     axios.get('http://localhost:5000/api/categories').then((res) => {
       setCategories(res.data)
     })
   }, [])
 
+  // Олон зураг сонгох
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files)
+    setImages(files)
+  }
+
+  // URL input өөрчлөх
+  const handleImageUrlChange = (idx, value) => {
+    const newUrls = [...imageUrls]
+    newUrls[idx] = value
+    setImageUrls(newUrls)
+  }
+
+  // URL input нэмэх
+  const addImageUrlInput = () => {
+    setImageUrls([...imageUrls, ''])
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Нэвтэрч орно уу')
@@ -50,15 +70,33 @@ export default function AddProductPage() {
     }
 
     try {
-      const res = await axios.post(
+      const formData = new FormData()
+      formData.append('name', name)
+      formData.append('price', price)
+      formData.append('description', description)
+      formData.append('category', category)
+      images.forEach((img) => formData.append('images', img))
+      // Зурагны URL-уудыг массив хэлбэрээр илгээнэ
+      imageUrls
+        .filter((url) => url.trim() !== '')
+        .forEach((url) => formData.append('imageUrls', url))
+      // Хэмжээг массив хэлбэрээр илгээнэ
+      sizes.forEach((size) => formData.append('sizes', size))
+
+      await axios.post(
         'http://localhost:5000/api/products',
-        { name, price, description, image, category },
-        { headers: { Authorization: `Bearer ${token}` } }
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       )
       alert('Бүтээгдэхүүн нэмэгдлээ!')
       router.push('/products')
     } catch (err) {
-      alert('Алдаа гарлаа: ' + err.response?.data?.message || 'Unknown error')
+      alert('Алдаа гарлаа: ' + (err.response?.data?.message || 'Unknown error'))
     }
   }
 
@@ -93,13 +131,39 @@ export default function AddProductPage() {
           className="w-full border p-2 rounded"
           rows={4}
         />
-        <input
-          type="text"
-          placeholder="Зурагны URL"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
+        <div>
+          <label className="block mb-1 font-medium">Зураг upload хийх</label>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full border p-2 rounded"
+          />
+        </div>
+        <div>
+          <label className="block mb-1 font-medium">Зурагны URL-ууд</label>
+          {imageUrls.map((url, idx) => (
+            <div key={idx} className="flex space-x-2 mb-2">
+              <input
+                type="text"
+                placeholder="Зурагны URL"
+                value={url}
+                onChange={(e) => handleImageUrlChange(idx, e.target.value)}
+                className="w-full border p-2 rounded"
+              />
+              {idx === imageUrls.length - 1 && (
+                <button
+                  type="button"
+                  onClick={addImageUrlInput}
+                  className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  +
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -108,7 +172,7 @@ export default function AddProductPage() {
         >
           <option value="">Ангилал сонгох</option>
           {categories
-            .filter((cat) => cat.parent) // зөвхөн эцэгтэй (sub-category) ангиллуудыг харуулна
+            .filter((cat) => cat.parent)
             .map((cat) => {
               const parent = categories.find((c) => c._id === cat.parent)
               const label = parent ? `${cat.name} (${parent.name})` : cat.name
@@ -119,6 +183,25 @@ export default function AddProductPage() {
               )
             })}
         </select>
+        <div>
+          <label className="block font-medium mb-2">Хэмжээ</label>
+          <div className="grid grid-cols-5 gap-2">
+            {defaultSizes.map(size => (
+              <label key={size} className="flex items-center space-x-1">
+                <input
+                  type="checkbox"
+                  value={size}
+                  checked={sizes.includes(size)}
+                  onChange={e => {
+                    if (e.target.checked) setSizes([...sizes, size])
+                    else setSizes(sizes.filter(s => s !== size))
+                  }}
+                />
+                <span>{size}</span>
+              </label>
+            ))}
+          </div>
+        </div>
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

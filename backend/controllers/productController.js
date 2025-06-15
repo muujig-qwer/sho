@@ -25,8 +25,38 @@ export const getProductsByCategoryId = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, image, category } = req.body;
-    const product = await Product.create({ name, price, description, image, category });
+    const { name, price, description, category } = req.body;
+    let images = [];
+
+    // Файлаар upload хийсэн зургууд
+    if (req.files && req.files.length > 0) {
+      images = req.files.map((file) => file.filename);
+    }
+
+    // URL-аар ирсэн зургууд
+    if (req.body.imageUrls) {
+      // imageUrls нэг ширхэг string эсвэл массив байж болно
+      if (Array.isArray(req.body.imageUrls)) {
+        images = images.concat(req.body.imageUrls);
+      } else if (typeof req.body.imageUrls === 'string') {
+        images.push(req.body.imageUrls);
+      }
+    }
+
+    let sizes = [];
+    if (req.body.sizes) {
+      if (Array.isArray(req.body.sizes)) sizes = req.body.sizes;
+      else sizes = [req.body.sizes];
+    }
+
+    const product = await Product.create({
+      name,
+      price,
+      description,
+      category,
+      images,
+      sizes, // энд нэмнэ!
+    });
     res.status(201).json(product);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -55,9 +85,31 @@ export const getProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(product);
+    const { name, price, description, category } = req.body;
+    let images = [];
+    if (req.files && req.files.length > 0) {
+      images = req.files.map((file) => file.filename);
+    }
+    let sizes = [];
+    if (req.body.sizes) {
+      if (Array.isArray(req.body.sizes)) sizes = req.body.sizes;
+      else sizes = [req.body.sizes];
+    }
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        price,
+        description,
+        category,
+        ...(images.length > 0 && { images }),
+        sizes,
+      },
+      { new: true }
+    );
+    res.status(200).json(product);
   } catch (err) {
+    console.error('Product update error:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -66,6 +118,34 @@ export const deleteProduct = async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.json({ message: 'Deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Сэтгэгдэл авах
+export const getProductComments = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id, 'comments');
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json(product.comments || []);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Сэтгэгдэл нэмэх
+export const addProductComment = async (req, res) => {
+  try {
+    const { author, comment, rating, date } = req.body;
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    const newComment = { author, comment, rating, date: date || new Date() };
+    product.comments.push(newComment);
+    await product.save();
+
+    res.status(201).json(newComment);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -6,44 +6,75 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState([])
 
   useEffect(() => {
-  const fetchOrders = async () => {
-    const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:5000/api/orders', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    setOrders(res.data)
-  }
-  fetchOrders()
-}, [])
+    const fetchOrders = async () => {
+      const token = localStorage.getItem('token')
+      const res = await axios.get('http://localhost:5000/api/orders', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setOrders(res.data)
+    }
+    fetchOrders()
+  }, [])
 
   return (
-    <div className="max-w-3xl mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">🧾 Миний Захиалгууд</h1>
+    <div className="max-w-3xl mx-auto mt-16 px-4">
+      <h1 className="text-3xl font-bold mb-8 flex items-center gap-3">
+        <span className="text-4xl">🧾</span>
+        Миний захиалгууд
+      </h1>
       {orders.length === 0 ? (
-        <p>Та одоогоор захиалга хийгээгүй байна.</p>
+        <div className="text-center py-16 text-gray-400 bg-white rounded-xl shadow">
+          <p className="text-lg">Та одоогоор захиалга хийгээгүй байна.</p>
+        </div>
       ) : (
-        orders.map((order) => (
-          <div key={order._id} className="border p-4 mb-4 rounded">
-            <h2 className="font-semibold">Захиалгын дугаар: {order._id}</h2>
-            <p>Нийт үнэ: {order.totalPrice}₮</p>
-            <p className="text-sm text-gray-500">Огноо: {new Date(order.createdAt).toLocaleString()}</p>
-            <ul className="mt-2 list-disc pl-5">
-              {order.products.map((p, idx) => (
-                <li key={idx}>
-                  {p.product && p.product.name ? (
-                    <>
-                      {p.product.name} — {p.quantity} ширхэг
-                    </>
-                  ) : (
-                    <>
-                      Бүтээгдэхүүний мэдээлэл олдсонгүй — {p.quantity} ширхэг
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
+        <div className="space-y-6">
+          {orders.map((order) => (
+            <div
+              key={order._id}
+              className="bg-white rounded-xl shadow p-6 border border-gray-100"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                <div className="font-semibold text-lg text-gray-900">
+                  Захиалгын дугаар: <span className="font-mono">{order._id.slice(-6).toUpperCase()}</span>
+                </div>
+                <div className="text-sm text-gray-500">
+                  {new Date(order.createdAt).toLocaleString()}
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-4 mb-3">
+                <div className="font-bold text-green-700 text-xl">
+                  {order.totalPrice.toLocaleString()}₮
+                </div>
+                <div className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs font-medium">
+                  {order.products.length} бүтээгдэхүүн
+                </div>
+              </div>
+              <ul className="mt-2 space-y-1">
+                {order.products.map((p, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-gray-700 text-sm">
+                    <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
+                    {p.product && p.product.name ? (
+                      <>
+                        <span className="font-medium">{p.product.name}</span>
+                        <span className="text-gray-400">—</span>
+                        <span>{p.quantity} ширхэг</span>
+                        {p.size && (
+                          <span className="ml-2 text-gray-500">({p.size})</span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="font-medium text-red-500">Бүтээгдэхүүний мэдээлэл олдсонгүй</span>
+                        <span className="text-gray-400">—</span>
+                        <span>{p.quantity} ширхэг</span>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   )

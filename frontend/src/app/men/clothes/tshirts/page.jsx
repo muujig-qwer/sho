@@ -4,13 +4,13 @@ import axios from 'axios'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function SneakersPage() {
+export default function TshirtsPage() {
   const [products, setProducts] = useState([])
   const pathname = usePathname()
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/684e540dd3f5bb28ee3f8109')
+      .get('http://localhost:5000/api/products/category/id/')
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
@@ -44,10 +44,10 @@ export default function SneakersPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Эрэгтэй – Пүүз</h1>
+      <h1 className="text-3xl font-bold mb-8">Эрэгтэй – Футболк</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Зүүн талын Sidebar */}
+        {/* Зүүн Sidebar */}
         <aside className="md:col-span-1">
           <nav className="space-y-6">
             {menSubcategories.map((section, idx) => (
@@ -74,45 +74,33 @@ export default function SneakersPage() {
           </nav>
         </aside>
 
-        {/* Баруун талын бүтээгдэхүүнүүд */}
+        {/* Бүтээгдэхүүнүүд */}
         <div className="md:col-span-3">
           {products.length === 0 ? (
             <div>Бүтээгдэхүүн олдсонгүй.</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map(product => {
-                // Зураг авах функц
-                const getImageUrl = (img) => {
-                  if (!img) return '/fallback.jpg'
-                  if (img.startsWith('http://') || img.startsWith('https://')) return img
-                  return `http://localhost:5000/uploads/${img}`
-                }
-                // images массивын эхний зураг эсвэл image талбар
-                const thumb = product.images?.[0] || product.image
-
-                return (
-                  <Link
-                    key={product._id}
-                    href={`/products/${product._id}`}
-                    className="border rounded-lg p-4 hover:shadow-lg transition"
-                  >
-                    {thumb ? (
-                      <img
-                        src={getImageUrl(thumb)}
-                        alt={product.name}
-                        className="w-full h-48 object-cover mb-2 rounded"
-                        onError={e => { e.target.src = '/fallback.jpg' }}
-                      />
-                    ) : (
-                      <div className="w-full h-48 flex items-center justify-center bg-gray-100 mb-2 rounded text-gray-400">
-                        Зураг байхгүй
-                      </div>
-                    )}
-                    <div className="font-semibold">{product.name}</div>
-                    <div className="text-gray-600">{product.price}₮</div>
-                  </Link>
-                )
-              })}
+              {products.map(product => (
+                <Link
+                  key={product._id}
+                  href={`/products/${product._id}`}
+                  className="border rounded-lg p-4 hover:shadow-lg transition"
+                >
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-48 object-cover mb-2 rounded"
+                    />
+                  ) : (
+                    <div className="w-full h-48 flex items-center justify-center bg-gray-100 mb-2 rounded text-gray-400">
+                      Зураг байхгүй
+                    </div>
+                  )}
+                  <div className="font-semibold">{product.name}</div>
+                  <div className="text-gray-600">{product.price}₮</div>
+                </Link>
+              ))}
             </div>
           )}
         </div>

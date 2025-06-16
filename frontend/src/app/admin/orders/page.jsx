@@ -23,8 +23,8 @@ export default function AdminOrdersPage() {
   if (loading) return <div>Уншиж байна...</div>
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Бүх захиалгууд</h1>
+    <div className=" p-6">
+      <h1 className="text-2xl font-bold pt-20 mb-4">Бүх захиалгууд</h1>
       <table className="min-w-full bg-white text-black">
         <thead>
           <tr>

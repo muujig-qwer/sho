@@ -10,7 +10,7 @@ export default function WomenSneakersPage() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/ТА_ЭМЭГТЭЙ_ПҮҮЗ_АНГИЛЛЫН_ID') // ← энд эмэгтэй пүүзний ангиллын ID-г оруулна уу
+      .get('http://localhost:5000/api/products/category/id/684fa4b73756ab9fdd1a787d') // ← энд эмэгтэй пүүзний ангиллын ID-г оруулна уу
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
@@ -43,7 +43,7 @@ export default function WomenSneakersPage() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 pt-30 py-8">
       <h1 className="text-3xl font-bold mb-8">Эмэгтэй – Пүүз</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -86,19 +86,27 @@ export default function WomenSneakersPage() {
                   href={`/products/${product._id}`}
                   className="border rounded-lg p-4 hover:shadow-lg transition"
                 >
-                  {product.image ? (
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-48 object-cover mb-2 rounded"
-                    />
-                  ) : (
-                    <div className="w-full h-48 flex items-center justify-center bg-gray-100 mb-2 rounded text-gray-400">
-                      Зураг байхгүй
-                    </div>
-                  )}
-                  <div className="font-semibold">{product.name}</div>
-                  <div className="text-gray-600">{product.price}₮</div>
+                  <div key={product._id} className="...">
+                    {(product.images && product.images.length > 0) ? (
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-48 object-cover mb-2 rounded"
+                      />
+                    ) : product.image ? (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-48 object-cover mb-2 rounded"
+                      />
+                    ) : (
+                      <div className="w-full h-48 flex items-center justify-center bg-gray-100 mb-2 rounded text-gray-400">
+                        Зураг байхгүй
+                      </div>
+                    )}
+                    <div className="font-semibold">{product.name}</div>
+                    <div className="text-gray-600">{product.price}₮</div>
+                  </div>
                 </Link>
               ))}
             </div>

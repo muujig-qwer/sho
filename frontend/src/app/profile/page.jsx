@@ -35,7 +35,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 px-4">
+    <div className="max-w-2xl mx-auto pt-30 mt-10 px-4">
       <div className="bg-white rounded-xl shadow-xl p-6 sm:p-10">
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Миний Профайл</h1>
 

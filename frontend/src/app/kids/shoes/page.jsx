@@ -10,7 +10,7 @@ export default function KidsShoesPage() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/ТА_ХҮҮХДИЙН_ГУТАЛ_АНГИЛЛЫН_ID') // ← энд хүүхдийн гутал ангиллын ID-г оруулна уу
+      .get('http://localhost:5000/api/products/category/id/684fc21be765e1b27c9db011') 
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
@@ -77,7 +77,13 @@ export default function KidsShoesPage() {
                   href={`/products/${product._id}`}
                   className="border rounded-lg p-4 hover:shadow-lg transition"
                 >
-                  {product.image ? (
+                  {(product.images && product.images.length > 0) ? (
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-48 object-cover mb-2 rounded"
+                    />
+                  ) : product.image ? (
                     <img
                       src={product.image}
                       alt={product.name}

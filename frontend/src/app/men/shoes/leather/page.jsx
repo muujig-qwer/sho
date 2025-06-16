@@ -10,7 +10,7 @@ export default function SneakersPage() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/684e5413d3f5bb28ee3f810c') // ← шинэ ID
+      .get('http://localhost:5000/api/products/category/id/684f88f13756ab9fdd1a780f') 
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
@@ -43,7 +43,7 @@ export default function SneakersPage() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 pt-30 py-8">
       <h1 className="text-3xl font-bold mb-8">Эрэгтэй – Пүүз</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

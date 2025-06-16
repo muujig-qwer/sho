@@ -53,7 +53,7 @@ export default function CartPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-16 px-4">
+    <div className="max-w-3xl mx-auto pt-30 mt-16 px-4">
       <h1 className="text-3xl font-bold mb-8 flex items-center gap-3">
         <span role="img" aria-label="cart" className="text-4xl">
           🛒
@@ -67,7 +67,7 @@ export default function CartPage() {
             onClick={() => router.push("/")}
             className="mt-6 px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition"
           >
-            Дэлгүүрлэж эхлэх
+            Дүүргэж эхлэх
           </button>
         </div>
       ) : (

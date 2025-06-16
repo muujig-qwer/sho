@@ -35,7 +35,9 @@ function ProductImages({ images = [] }) {
             key={i}
             src={getImageUrl(img)}
             alt={`Зураг ${i + 1}`}
-            className={`aspect-square rounded-lg object-cover cursor-pointer border-2 ${selectedImage === img ? 'border-blue-500' : 'border-transparent'}`}
+            className={`aspect-square rounded-lg object-cover cursor-pointer border-2 transition-all duration-200
+              ${selectedImage === img ? 'border-blue-500 scale-105' : 'border-transparent'}
+              hover:border-blue-400 hover:scale-105`}
             onClick={() => {
               setSelectedImage(img)
               setImgError(false)

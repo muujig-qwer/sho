@@ -3,15 +3,12 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode'
 import axios from 'axios'
+import { BarChart3, Users, PackageCheck } from 'lucide-react'
 
 export default function AdminDashboard() {
   const router = useRouter()
   const [isAdmin, setIsAdmin] = useState(false)
-  const [stats, setStats] = useState({
-    products: 0,
-    users: 0,
-    orders: 0,
-  })
+  const [stats, setStats] = useState({ products: 0, users: 0, orders: 0 })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -32,7 +29,6 @@ export default function AdminDashboard() {
   }, [router])
 
   useEffect(() => {
-    // Админ болсны дараа статистик авах
     if (isAdmin) {
       const fetchStats = async () => {
         try {
@@ -50,58 +46,61 @@ export default function AdminDashboard() {
             users: usersRes.data.length,
             orders: ordersRes.data.length,
           })
-        } catch (e) {
-          // алдаа гарвал статистик харуулахгүй
-        }
+        } catch (e) {}
       }
       fetchStats()
     }
   }, [isAdmin])
 
-  if (!isAdmin) {
-    return <p className="mt-10 text-center">Ачааллаж байна...</p>
-  }
+  if (!isAdmin) return <p className="mt-10 text-center">Ачааллаж байна...</p>
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 border rounded shadow bg-white">
-      <h1 className="text-3xl font-bold mb-8 text-center text-blue-700">Админ Хяналтын Самбар</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-blue-100 rounded-lg p-6 flex flex-col items-center shadow">
-          <span className="text-4xl font-bold text-blue-700">{stats.products}</span>
-          <span className="mt-2 text-lg text-gray-700">Бүтээгдэхүүн</span>
+    <div className="max-w-6xl mx-auto pt-32 px-6">
+      <h1 className="text-4xl font-bold mb-12 text-center text-gray-800">
+        Админ Хяналтын Самбар
+      </h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-10">
+        <div className="bg-blue-600 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+          <BarChart3 className="h-10 w-10 mb-3" />
+          <p className="text-3xl font-bold">{stats.products}</p>
+          <p className="mt-2 text-lg">Бүтээгдэхүүн</p>
         </div>
-        <div className="bg-green-100 rounded-lg p-6 flex flex-col items-center shadow">
-          <span className="text-4xl font-bold text-green-700">{stats.users}</span>
-          <span className="mt-2 text-lg text-gray-700">Хэрэглэгч</span>
+
+        <div className="bg-green-600 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+          <Users className="h-10 w-10 mb-3" />
+          <p className="text-3xl font-bold">{stats.users}</p>
+          <p className="mt-2 text-lg">Хэрэглэгчид</p>
         </div>
-        <div className="bg-yellow-100 rounded-lg p-6 flex flex-col items-center shadow">
-          <span className="text-4xl font-bold text-yellow-700">{stats.orders}</span>
-          <span className="mt-2 text-lg text-gray-700">Захиалга</span>
+
+        <div className="bg-yellow-500 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+          <PackageCheck className="h-10 w-10 mb-3" />
+          <p className="text-3xl font-bold">{stats.orders}</p>
+          <p className="mt-2 text-lg">Захиалгууд</p>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-6">
-        {isAdmin && (
-          <div className="flex-1 bg-gray-50 rounded-lg p-6 shadow">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Шинэ бүтээгдэхүүн нэмэх</h2>
-            <a
-              href="/products/add"
-              className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-            >
-              + Бүтээгдэхүүн нэмэх
-            </a>
-          </div>
-        )}
-        <div className="flex-1 bg-gray-50 rounded-lg p-6 shadow">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Захиалгуудыг харах</h2>
+
+      <div className="grid sm:grid-cols-2 gap-6">
+        <div className="bg-white border rounded-xl p-6 shadow hover:shadow-md transition">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Бүтээгдэхүүн нэмэх</h2>
+          <a
+            href="/products/add"
+            className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            + Шинэ бүтээгдэхүүн
+          </a>
+        </div>
+
+        <div className="bg-white border rounded-xl p-6 shadow hover:shadow-md transition">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Захиалгууд</h2>
           <a
             href="/admin/orders"
             className="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition"
           >
-            Захиалгууд
+            Захиалгуудыг үзэх
           </a>
         </div>
       </div>
-      {/* Энд цаашид хүссэн хүснэгт, график, мэдээллээ нэмээрэй */}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import {
@@ -24,6 +24,7 @@ function IconLink({ href, Icon, tooltip, className = "" }) {
 }
 
 export default function Navbar() {
+  const router = useRouter();
   const pathname = usePathname()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [role, setRole] = useState('')
@@ -33,6 +34,7 @@ export default function Navbar() {
   const [womenDropdownOpen, setWomenDropdownOpen] = useState(false)
   const [kidsDropdownOpen, setKidsDropdownOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,9 +66,13 @@ export default function Navbar() {
   }, [pathname])
 
   const handleLogout = () => {
+  if (typeof window !== "undefined") {
     localStorage.removeItem('token')
-    window.location.href = '/login'
+    localStorage.removeItem('userId')
   }
+  router.push('/login')
+}
+
 
   useEffect(() => {
     if (!menDropdownOpen) return
@@ -324,7 +330,7 @@ export default function Navbar() {
                 ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' 
                 : 'text-white hover:text-yellow-200'
             }`}>
-              <span className="drop-shadow-lg">My E-Shop</span>
+              <span className="drop-shadow-lg">E-Shop</span>
             </Link>
           </div>
 
@@ -345,7 +351,7 @@ export default function Navbar() {
                   <>
                     <IconLink href="/admin/dashboard" Icon={FaTachometerAlt} tooltip="Админ самбар" />
                     <IconLink href="/admin/orders" Icon={FaClipboardList} tooltip="Захиалгууд" />
-                    <IconLink href="/categories/add" Icon={FaBoxes} tooltip="Ангилал нэмэх" />
+                    <IconLink href="/categories" Icon={FaBoxes} tooltip="Ангилал нэмэх" />
                     <div className={`px-4 py-2 rounded-full text-sm font-bold ${
                       scrolled 
                         ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 

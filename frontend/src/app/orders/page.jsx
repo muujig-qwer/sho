@@ -17,7 +17,7 @@ export default function OrdersPage() {
   }, [])
 
   return (
-    <div className="max-w-3xl mx-auto mt-16 px-4">
+    <div className="max-w-3xl pt-30 mx-auto mt-16 px-4">
       <h1 className="text-3xl font-bold mb-8 flex items-center gap-3">
         <span className="text-4xl">🧾</span>
         Миний захиалгууд

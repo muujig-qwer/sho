@@ -34,8 +34,8 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-4">
-      <h1 className="text-2xl font-bold mb-6">Хэрэглэгчдийн жагсаалт</h1>
+    <div className="max-w-4xl mx-auto  mt-10 p-4">
+      <h1 className="text-2xl font-bold  mb-6">Хэрэглэгчдийн жагсаалт</h1>
       <table className="w-full border table-auto">
         <thead>
           <tr className="bg-gray-200">

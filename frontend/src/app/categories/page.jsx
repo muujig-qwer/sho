@@ -81,7 +81,7 @@ export default function CategoryListPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 border rounded shadow">
+    <div className="max-w-xl mx-auto pt-30 mt-10 p-6 border rounded shadow">
       <h1 className="text-2xl font-bold mb-6">Ангиллын жагсаалт</h1>
 
       {/* Category нэмэх */}

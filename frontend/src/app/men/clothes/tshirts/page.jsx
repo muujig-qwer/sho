@@ -10,7 +10,7 @@ export default function TshirtsPage() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products/category/id/')
+      .get('http://localhost:5000/api/products/category/id/684fc15ee765e1b27c9daff7')
       .then(res => setProducts(res.data))
       .catch(err => console.error('Алдаа: ', err))
   }, [])
@@ -43,7 +43,7 @@ export default function TshirtsPage() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 pt-30 py-8">
       <h1 className="text-3xl font-bold mb-8">Эрэгтэй – Футболк</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

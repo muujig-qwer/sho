@@ -5,18 +5,31 @@ import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
+  const [form, setForm] = useState({ name: '', email: '', password: '' })
+  const [image, setImage] = useState(null)
+  const [preview, setPreview] = useState(null)
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e) => {
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleImage = e => {
+    setImage(e.target.files[0])
+    setPreview(URL.createObjectURL(e.target.files[0]))
+  }
+
+  const handleSubmit = async e => {
     e.preventDefault()
+    const data = new FormData()
+    data.append('name', form.name)
+    data.append('email', form.email)
+    data.append('password', form.password)
+    if (image) data.append('image', image)
+
     try {
-      await axios.post('http://localhost:5000/api/auth/register', {
-        name,
-        email,
-        password,
+      await axios.post('http://localhost:5000/api/auth/register', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       })
       router.push('/login')
     } catch (err) {
@@ -38,10 +51,11 @@ export default function RegisterPage() {
             </label>
             <input
               id="name"
+              name="name"
               type="text"
-              value={name}
+              value={form.name}
               placeholder="Таны нэр"
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
             />
@@ -53,10 +67,11 @@ export default function RegisterPage() {
             </label>
             <input
               id="email"
+              name="email"
               type="email"
-              value={email}
+              value={form.email}
               placeholder="you@example.com"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
             />
@@ -68,13 +83,34 @@ export default function RegisterPage() {
             </label>
             <input
               id="password"
+              name="password"
               type="password"
-              value={password}
+              value={form.password}
               placeholder="••••••••"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
             />
+          </div>
+
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+              Зураг
+            </label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImage}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+            />
+            {preview && (
+              <img
+                src={preview}
+                alt="preview"
+                className="w-24 h-24 rounded-full object-cover mt-2"
+              />
+            )}
           </div>
 
           {error && <p className="text-sm text-red-600 text-center">{error}</p>}

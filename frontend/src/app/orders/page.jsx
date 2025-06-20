@@ -1,20 +1,54 @@
 'use client'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 export default function OrdersPage() {
+  const { data: session, status } = useSession()
   const [orders, setOrders] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
 
   useEffect(() => {
+    if (!session) return
     const fetchOrders = async () => {
-      const token = localStorage.getItem('token')
-      const res = await axios.get('http://localhost:5000/api/orders', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      setOrders(res.data)
+      try {
+        // Google login хэрэглэгчийн email-ээр захиалгыг авна
+        const res = await axios.get(
+          `http://localhost:5000/api/orders?email=${encodeURIComponent(session.user.email)}`
+        )
+        setOrders(res.data)
+      } catch (err) {
+        setError("Захиалга уншихад алдаа гарлаа")
+      } finally {
+        setLoading(false)
+      }
     }
     fetchOrders()
-  }, [])
+  }, [session])
+
+  if (status === "loading" || loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!session) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <p className="text-lg text-gray-600 mb-4">Захиалгаа харахын тулд нэвтэрнэ үү.</p>
+        <a href="/login" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+          Нэвтрэх
+        </a>
+      </div>
+    )
+  }
+
+  if (error) {
+    return <div className="text-red-600 text-center mt-12">{error}</div>
+  }
 
   return (
     <div className="max-w-3xl pt-30 mx-auto mt-16 px-4">

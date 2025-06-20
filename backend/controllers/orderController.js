@@ -1,31 +1,53 @@
 import Order from '../models/Order.js'
+import User from '../models/User.js'
 
 export const createOrder = async (req, res) => {
   try {
+    const { email, products, totalPrice } = req.body
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email байхгүй байна' })
+    }
+
+    // Email-ээр хэрэглэгчийг хайна, байхгүй бол шинээр үүсгэнэ
+    let user = await User.findOne({ email })
+    if (!user) {
+      user = await User.create({ email, name: email.split('@')[0] }) // эсвэл илүү дэлгэрэнгүй мэдээлэл session-оос илгээнэ
+    }
+
+    if (!products || !Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({ message: 'Бүтээгдэхүүн байхгүй байна' })
+    }
+
     const order = new Order({
-      user: req.user._id,
-      products: req.body.products,
-      totalPrice: req.body.totalPrice,
+      user: user._id,
+      products,
+      totalPrice,
     })
+
     await order.save()
     res.status(201).json(order)
   } catch (err) {
-    console.error(err) // Алдааг терминалдаа харна уу!
+    console.error('Order үүсгэхэд алдаа:', err)
     res.status(500).json({ message: 'Захиалга үүсгэхэд алдаа гарлаа' })
   }
 };
 
 export const getOrders = async (req, res) => {
   try {
-    let orders
-    if (req.user.role === 'admin') {
-      orders = await Order.find().populate('products.product')
-    } else {
-      orders = await Order.find({ user: req.user._id }).populate('products.product')
+    const { email } = req.query;
+    let user = null;
+    if (email) {
+      user = await User.findOne({ email });
     }
-    res.json(orders)
+    let filter = {};
+    if (user) {
+      filter.user = user._id;
+    }
+    const orders = await Order.find(filter).populate('products.product');
+    res.json(orders);
   } catch (err) {
-    res.status(500).json({ message: 'Захиалга авахад алдаа гарлаа' })
+    res.status(500).json({ message: 'Захиалга уншихад алдаа гарлаа' });
   }
 };
 

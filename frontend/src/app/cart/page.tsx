@@ -1,6 +1,7 @@
 "use client";
 import { useCart } from "../../context/CartContext";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import React from "react";
 
@@ -20,16 +21,17 @@ export default function CartPage() {
     clearCart: () => void;
   };
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
+  // Захиалга хийх
   const handleOrder = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Нэвтрэх шаардлагатай");
+    if (!session) {
+      alert("Зөвхөн нэвтэрсэн хэрэглэгч захиалга хийх боломжтой.");
       router.push("/login");
       return;
     }
@@ -43,14 +45,40 @@ export default function CartPage() {
 
       await axios.post(
         "http://localhost:5000/api/orders",
-        { products, totalPrice: total },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          products,
+          totalPrice: total,
+          email: session.user.email, // Google login хэрэглэгчийн email
+        }
       );
+      clearCart();
       router.push("/orders");
     } catch (err) {
       alert("Захиалга үүсгэхэд алдаа гарлаа");
     }
   };
+
+  if (status === "loading") {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <p className="text-lg text-gray-600 mb-4">Сагсаа харахын тулд нэвтэрнэ үү.</p>
+        <button
+          onClick={() => router.push("/login")}
+          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          Нэвтрэх
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto pt-30 mt-16 px-4">

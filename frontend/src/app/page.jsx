@@ -32,14 +32,14 @@ export default function HomePage() {
     categories.filter((cat) => cat.parent === parentId);
 
   return (
-    <div className="bg-white text-gray-800">
+    <div className="bg-white text-gray-800 font-montserrat">
       {/* Hero section */}
       <section className="relative w-full h-screen overflow-x-hidden bg-[url('https://cdn.allbirds.com/image/upload/f_auto,q_auto,w_1728/cms/5fVKgLvCKMOejuNtFKAK16/2f2c9a68c1b55752c3cd3388d687caa4/25Q2_White_Sneaker_Season_Mens_Site_HomepageHero_Desktop_2880x1245.jpg')] bg-cover bg-center bg-no-repeat flex items-end justify-end">
         <div className="text-right px-4 pb-12 max-w-xl w-full">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold text-black mb-4">
             Таны амьдралыг хялбарчлах сонголтууд
           </h1>
-          <p className="text-lg text-white mb-6 max-w-xl ml-auto">
+          <p className="text-lg text-black mb-6 max-w-xl ml-auto">
             Орчин үеийн хэв маяг, тав тухтай хэрэглээг нэг дороос. Хувцас,
             гутал, гэр ахуйн бараа болон бусад.
           </p>
@@ -52,7 +52,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/about"
-              className="border-2 border-white text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:text-black transition"
+              className="border-2 border-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:text-black transition"
             >
               Бидний тухай
             </Link>

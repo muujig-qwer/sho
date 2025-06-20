@@ -1,10 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/context/CartContext'  // Таны CartContext байрлалын дагуу өөрчлөх
+import { signIn, useSession } from "next-auth/react"
 
 export default function LoginPage() {
+  const { data: session, status } = useSession()
   const router = useRouter()
   const { setUserId } = useCart()  // setUserId-г авах
 
@@ -12,6 +14,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (status === "loading") return // Session ачааллаж дуусаагүй бол юу ч хийхгүй
+    if (session) {
+      router.push("/")
+    }
+  }, [session, status])
 
   const handleEmailSubmit = (e) => {
     e.preventDefault()
@@ -117,6 +126,13 @@ export default function LoginPage() {
             </button>
           </form>
         )}
+
+        <button
+          onClick={() => signIn('google', { callbackUrl: '/' })}
+          className="bg-red-500 text-white px-4 py-2 rounded w-full mt-4"
+        >
+          Google-ээр нэвтрэх
+        </button>
 
         <p className="text-sm text-center text-gray-500 mt-6">
           Шинэ хэрэглэгч үү?{' '}

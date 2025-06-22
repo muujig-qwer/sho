@@ -104,129 +104,137 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4">
           {/* Top Row */}
           <div className="flex items-center justify-between h-16">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              {menuOpen ? (
-                <FaTimes className="h-5 w-5 text-gray-600" />
-              ) : (
-                <FaBars className="h-5 w-5 text-gray-600" />
-              )}
-            </button>
+            {/* Left Section - Mobile Menu + Logo */}
+            <div className="flex items-center gap-4">
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                {menuOpen ? (
+                  <FaTimes className="h-5 w-5 text-gray-600" />
+                ) : (
+                  <FaBars className="h-5 w-5 text-gray-600" />
+                )}
+              </button>
 
-            {/* Logo */}
-            <Link
-              href="/"
-              className="text-2xl font-bold text-green-600 hover:text-green-700 transition-colors"
-            >
-              FreshPack
-            </Link>
-
-            {/* Location (Desktop) */}
-            <div className="hidden lg:flex items-center text-sm text-gray-600">
-              <FaMapMarkerAlt className="h-4 w-4 mr-2" />
-              <span>Сүхбаатрын талбай...</span>
-              <FaChevronDown className="h-3 w-3 ml-1" />
+              {/* Logo */}
+              <Link
+                href="/"
+                className="text-2xl font-bold text-green-600 hover:text-green-700 transition-colors"
+              >
+                FreshPack
+              </Link>
             </div>
 
-            {/* Search Bar (Desktop) */}
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Дэлгүүр хайх"
-                  className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-400 hover:text-green-600 transition-colors"
-                >
-                  <FaSearch className="h-4 w-4" />
-                </button>
-              </div>
-            </form>
+            {/* Center Section - Search Bar (Desktop) */}
+            <div className="flex-1 max-w-2xl mx-8">
+              <form onSubmit={handleSearch} className="hidden md:flex">
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Дэлгүүр хайх"
+                    className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-400 hover:text-green-600 transition-colors"
+                  >
+                    <FaSearch className="h-4 w-4" />
+                  </button>
+                </div>
+              </form>
+            </div>
 
-            {/* Right Icons */}
-            <div className="flex items-center gap-4">
-              {/* Desktop Icons */}
-              <div className="hidden md:flex items-center gap-4">
-                {session ? (
-                  <>
-                    {!isAdmin && (
-                      <>
-                        <Link href="/cart" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                          <FaShoppingCart className="h-5 w-5" />
-                        </Link>
-                        <Link href="/orders" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                          <FaClipboardList className="h-5 w-5" />
-                        </Link>
-                      </>
-                    )}
-                    <Link href="/favorites" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                      <FaHeart className="h-5 w-5" />
-                    </Link>
-                    <Link href="/notifications" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                      <FaBell className="h-5 w-5" />
-                    </Link>
-                    <Link href="/profile" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                      <FaUser className="h-5 w-5" />
-                    </Link>
-                    {isAdmin && (
-                      <>
-                        <Link href="/admin/dashboard" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                          <FaTachometerAlt className="h-5 w-5" />
-                        </Link>
-                        <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                          Админ
-                        </span>
-                      </>
-                    )}
-                    <button
-                      onClick={handleLogout}
-                      className="p-2 text-gray-600 hover:text-red-600 transition-colors"
-                    >
-                      <FaSignOutAlt className="h-5 w-5" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      href="/login"
-                      className="px-4 py-2 text-green-600 hover:text-green-700 font-medium transition-colors"
-                    >
-                      Нэвтрэх
-                    </Link>
-                    <Link
-                      href="/register"
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors"
-                    >
-                      Бүртгүүлэх
-                    </Link>
-                  </>
-                )}
+            {/* Right Section - Location + Navigation Icons */}
+            <div className="flex items-center gap-6">
+              {/* Location (Desktop) */}
+              <div className="hidden lg:flex items-center text-sm text-gray-600 cursor-pointer hover:text-gray-800 transition-colors">
+                <FaMapMarkerAlt className="h-4 w-4 mr-2" />
+                <span>Сүхбаатрын талбай...</span>
+                <FaChevronDown className="h-3 w-3 ml-1" />
               </div>
 
-              {/* Mobile Icons */}
-              <div className="flex md:hidden items-center gap-2">
-                <button className="p-2 text-gray-600">
-                  <FaSearch className="h-5 w-5" />
-                </button>
-                {session && (
-                  <Link href="/cart" className="p-2 text-gray-600">
-                    <FaShoppingCart className="h-5 w-5" />
-                  </Link>
-                )}
+              {/* Navigation Icons */}
+              <div className="flex items-center gap-3">
+                {/* Desktop Icons */}
+                <div className="hidden md:flex items-center gap-3">
+                  {session ? (
+                    <>
+                      {!isAdmin && (
+                        <>
+                          <Link href="/cart" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                            <FaShoppingCart className="h-5 w-5" />
+                          </Link>
+                          <Link href="/orders" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                            <FaClipboardList className="h-5 w-5" />
+                          </Link>
+                        </>
+                      )}
+                      <Link href="/favorites" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                        <FaHeart className="h-5 w-5" />
+                      </Link>
+                      <Link href="/notifications" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                        <FaBell className="h-5 w-5" />
+                      </Link>
+                      <Link href="/profile" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                        <FaUser className="h-5 w-5" />
+                      </Link>
+                      {isAdmin && (
+                        <>
+                          <Link href="/admin/dashboard" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                            <FaTachometerAlt className="h-5 w-5" />
+                          </Link>
+                          <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                            Админ
+                          </span>
+                        </>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                      >
+                        <FaSignOutAlt className="h-5 w-5" />
+                      </button>
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href="/login"
+                        className="px-4 py-2 text-green-600 hover:text-green-700 font-medium transition-colors"
+                      >
+                        Нэвтрэх
+                      </Link>
+                      <Link
+                        href="/register"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors"
+                      >
+                        Бүртгүүлэх
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
+                {/* Mobile Icons */}
+                <div className="flex md:hidden items-center gap-2">
+                  <button className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                    <FaSearch className="h-5 w-5" />
+                  </button>
+                  {session && (
+                    <Link href="/cart" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                      <FaShoppingCart className="h-5 w-5" />
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Categories Row */}
           <div className="border-t border-gray-100 py-4">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between">
               {/* All Categories Dropdown */}
               <div className="relative">
                 <button
@@ -252,20 +260,8 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Category Scroll Container (optional, can be removed if dropdown replaces it) */}
-              {/* <div className="flex-1 overflow-x-auto scrollbar-hide">
-                <div className="flex gap-2 pb-2">
-                  {categories.map((category) => (
-                    <CategoryIcon
-                      key={category.key}
-                      icon={category.icon}
-                      label={category.label}
-                      href={category.href}
-                      isActive={pathname.startsWith(category.href)}
-                    />
-                  ))}
-                </div>
-              </div> */}
+              {/* Right side spacing/alignment helper */}
+              <div className="flex-1"></div>
             </div>
           </div>
         </div>

@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import FeaturedCarousel from "@/components/FeaturedCarousel";
+import CategorySlider from "@/components/CategorySlider";
+import DiscountSlider from "@/components/DiscountSlider";
+import BrandProductSlider from "@/components/BrandProductSlider";
 
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
@@ -31,124 +34,50 @@ export default function HomePage() {
   const getChildCategories = (parentId) =>
     categories.filter((cat) => cat.parent === parentId);
 
+  // Хямдралтай бараануудыг шүүх
+  const discountedProducts = featuredProducts.filter(
+    (p) => p.discount && p.discountPrice
+  );
+
   return (
     <div className="bg-white text-gray-800 font-montserrat">
-      {/* Hero section */}
-      <section className="relative w-full h-screen overflow-x-hidden bg-[url('https://cdn.allbirds.com/image/upload/f_auto,q_auto,w_1728/cms/5fVKgLvCKMOejuNtFKAK16/2f2c9a68c1b55752c3cd3388d687caa4/25Q2_White_Sneaker_Season_Mens_Site_HomepageHero_Desktop_2880x1245.jpg')] bg-cover bg-center bg-no-repeat flex items-end justify-end">
-        <div className="text-right px-4 pb-12 max-w-xl w-full">
-          <h1 className="text-3xl md:text-5xl font-bold text-black mb-4">
-            Таны амьдралыг хялбарчлах сонголтууд
-          </h1>
-          <p className="text-lg text-black mb-6 max-w-xl ml-auto">
-            Орчин үеийн хэв маяг, тав тухтай хэрэглээг нэг дороос. Хувцас,
-            гутал, гэр ахуйн бараа болон бусад.
-          </p>
-          <div className="flex gap-2 justify-end">
-            <Link
-              href="/products"
-              className="bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition"
-            >
-              Дэлгүүр хэсэх
-            </Link>
-            <Link
-              href="/about"
-              className="border-2 border-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:text-black transition"
-            >
-              Бидний тухай
-            </Link>
-          </div>
-        </div>
+      {/* Category Slider - Hero section-ий ДЭЭР */}
+      <section className="max-w-7xl mx-auto px-4 pt-6">
+        <CategorySlider categories={parentCategories} />
       </section>
 
-      {/* Бидний давуу тал */}
-      <section className="w-full px-5 py-5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div
-    className="relative rounded-lg bg-cover bg-top h-[850px] group"
-    style={{
-      backgroundImage:
-        "url('https://plus.unsplash.com/premium_photo-1664201890484-a5f7109c8e56?auto=format&fit=crop&w=900&q=80')",
-    }}
-  >
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
-      <h3 className="text-xl font-bold text-white mt-2">Байгальд ээлтэй материал</h3>
-      <p className="text-white">Эрүүл мэндэд хоргүй, дахин боловсруулсан түүхий эд</p>
-    </div>
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <Link
-        href="/men/accessories/belts"
-        className="bg-white/90 text-black px-4 py-2 rounded-none text-sm font-medium hover:bg-black hover:text-white transition mx-2"
-      >
-        Эрэгтэй
-      </Link>
-      <Link
-        href="/women/accessories/belts"
-        className="bg-white/90 text-black px-4 py-2 rounded-none text-sm font-medium hover:bg-black hover:text-white transition mx-2"
-      >
-        Эмэгтэй
-      </Link>
-    </div>
-  </div>
-          <div
-            className="relative rounded-lg bg-cover bg-top h-[850px] group"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80')",
-            }}
-          >
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
-              <h3 className="text-xl font-bold text-white mt-2">
-                Хүрээлэн буй орчинд ээлтэй
-              </h3>
-              <p className="text-white">
-                Бид нүүрстөрөгчийн ялгарлыг тэглэх бодлого баримталдаг
-              </p>
-            </div>
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Link
-                href="/men/clothes/tshirts"
-                className="bg-white/90 text-black px-4 py-2 rounded-none text-sm font-medium hover:bg-black hover:text-white transition mx-2"
-              >
-                Эрэгтэй
-              </Link>
-              <Link
-                href="/women/clothes/dresses"
-                className="bg-white/90 text-black px-4 py-2 rounded-none text-sm font-medium hover:bg-black hover:text-white transition mx-2"
-              >
-                Эмэгтэй
-              </Link>
-            </div>
-          </div>
+      {/* Hero section-ийг устгаад DiscountSlider-ийг оруулна */}
+      <section className="max-w-7xl mx-auto px-4 pt-6 bg-white rounded-xl shadow">
+        <DiscountSlider products={featuredProducts} />
+      </section>
 
-          <div
-            className="relative rounded-lg bg-cover bg-top h-[850px] group"
-            style={{
-              backgroundImage:
-                "url('https://cdn.allbirds.com/image/upload/f_auto,q_auto,w_2000/cms/7kcrYAMvgP0jeDCxEZhM7T/b872659dc6eae46319b1f61eb3ab844b/25Q1_HB_A11475_W_OnBody_KneeDown_01789.jpg')",
-            }}
-          >
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
-              <h3 className="text-xl font-bold text-white mt-2">
-                Өдөржин тав тухтай
-              </h3>
-              <p className="text-white">Загвар ба чанарыг нэгтгэсэн шийдэл</p>
-            </div>
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Link
-                href="/men/shoes/sneakers"
-                className="bg-white/90 text-black px-4 py-2 rounded-none text-sm font-medium hover:bg-black hover:text-white transition mx-2"
-              >
-                Эрэгтэй
-              </Link>
-              <Link
-                href="/women/shoes/sneakers"
-                className="bg-white/90 text-black px-4 py-2 rounded-none text-sm font-medium hover:bg-black hover:text-white transition mx-2"
-              >
-                Эмэгтэй
-              </Link>
-            </div>
-          </div>
-        </div>
+      {/* Brand Product Sliders */}
+      <section className="max-w-7xl mx-auto  px-4 py-8 space-y-12">
+        {/* Dreame брэндийн бараа */}
+        <BrandProductSlider 
+          products={featuredProducts}
+          showViewAll={true}
+        />
+        
+        {/* Apple брэндийн бараа */}
+        <BrandProductSlider 
+          products={featuredProducts}
+          showViewAll={true}
+        />
+        
+        {/* Samsung брэндийн бараа */}
+        <BrandProductSlider 
+          brand="Samsung" 
+          products={featuredProducts}
+          showViewAll={true}
+        />
+        
+        {/* Xiaomi брэндийн бараа */}
+        <BrandProductSlider 
+          brand="Xiaomi" 
+          products={featuredProducts}
+          showViewAll={true}
+        />
       </section>
 
       {/* Уриа */}
@@ -216,7 +145,7 @@ export default function HomePage() {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {/* Нэр, үнэ зураг дотор байрлана */}
-                    <div className="absolute bottom-0 left-0 w-full  text-black px-4 py-2">
+                    <div className="absolute bottom-0 left-0 w-full text-black px-4 py-2">
                       <h3 className="font-medium text-sm sm:text-base">
                         {product.name}
                       </h3>

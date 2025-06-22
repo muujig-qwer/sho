@@ -52,7 +52,15 @@ export default function SneakersPage() {
           <nav className="space-y-6">
             {menSubcategories.map((section, idx) => (
               <div key={idx}>
-                <h2 className="text-lg font-semibold mb-2">{section.title}</h2>
+                <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                  {section.title}
+                  {/* Хэрвээ "Гутал" хэсэг бол пүүзний тоог харуулна */}
+                  {section.title === 'Гутал' && (
+                    <span className="text-xs bg-black text-white rounded-full px-2 py-0.5">
+                      {products.length}
+                    </span>
+                  )}
+                </h2>
                 <ul className="space-y-1">
                   {section.items.map((item, idx) => (
                     <li key={idx}>
@@ -65,6 +73,12 @@ export default function SneakersPage() {
                         }`}
                       >
                         {item.name}
+                        {/* Хэрвээ энэ нь "Пүүз" бол тоог харуулна */}
+                        {item.name === 'Пүүз' && (
+                          <span className="ml-2 text-xs bg-gray-200 text-gray-700 rounded-full px-2">
+                            {products.length}
+                          </span>
+                        )}
                       </Link>
                     </li>
                   ))}

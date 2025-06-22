@@ -25,7 +25,7 @@ export const getProductsByCategoryId = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, category } = req.body;
+    const { name, price, description, category, discount, discountPrice } = req.body;
     let images = [];
 
     // Файлаар upload хийсэн зургууд
@@ -55,7 +55,9 @@ export const createProduct = async (req, res) => {
       description,
       category,
       images,
-      sizes, // энд нэмнэ!
+      sizes,
+      discount,        // нэмэгдсэн
+      discountPrice,   // нэмэгдсэн
     });
     res.status(201).json(product);
   } catch (err) {
@@ -85,7 +87,7 @@ export const getProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, category } = req.body;
+    const { name, price, description, category, discount, discountPrice } = req.body;
     let images = [];
     if (req.files && req.files.length > 0) {
       images = req.files.map((file) => file.filename);
@@ -104,6 +106,8 @@ export const updateProduct = async (req, res) => {
         category,
         ...(images.length > 0 && { images }),
         sizes,
+        discount,        // нэмэгдсэн
+        discountPrice,   // нэмэгдсэн
       },
       { new: true }
     );

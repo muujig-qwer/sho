@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter, useParams } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode'
+import { useWishlist } from "@/context/WishlistContext";
 
 const defaultSizes = ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45']
 
@@ -16,8 +17,10 @@ export default function EditProductPage() {
   const [category, setCategory] = useState('') // null биш!
   const [sizes, setSizes] = useState([]) // Шинэ нэмэлт
   const [isAdmin, setIsAdmin] = useState(false)
+  const [discount, setDiscount] = useState('') // discount state нэмэх
   const router = useRouter()
   const { id } = useParams()
+  const { addToWishlist, wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -56,6 +59,8 @@ export default function EditProductPage() {
       if (res.data.sizes && res.data.sizes.length > 0) {
         setSizes(res.data.sizes)
       }
+      // Discount утгыг populate хийх
+      setDiscount(res.data.discount || '')
     })
   }, [id])
 
@@ -89,11 +94,11 @@ export default function EditProductPage() {
       formData.append('price', price)
       formData.append('description', description)
       formData.append('category', category)
+      formData.append('discount', discount) // discount-ийг formData-д нэмэх
       images.forEach((img) => formData.append('images', img))
       imageUrls
         .filter((url) => url.trim() !== '')
         .forEach((url) => formData.append('imageUrls', url))
-      // Хэмжээг массив хэлбэрээр илгээнэ
       sizes.forEach((size) => formData.append('sizes', size))
 
       await axios.put(
@@ -117,6 +122,8 @@ export default function EditProductPage() {
     return <p className="mt-10 text-center">Ачааллаж байна...</p>
   }
 
+  const isWished = wishlist.some((p) => p._id === product._id);
+
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 border rounded shadow">
       <h1 className="text-2xl font-bold mb-6">Бүтээгдэхүүн засах</h1>
@@ -136,6 +143,16 @@ export default function EditProductPage() {
           onChange={(e) => setPrice(e.target.value)}
           className="w-full border p-2 rounded"
           required
+        />
+        {/* Discount input талбар нэмэх */}
+        <input
+          type="number"
+          placeholder="Хөнгөлөлт (%)"
+          value={discount}
+          onChange={(e) => setDiscount(e.target.value)}
+          className="w-full border p-2 rounded"
+          min={0}
+          max={100}
         />
         <textarea
           placeholder="Тайлбар"
@@ -222,6 +239,18 @@ export default function EditProductPage() {
           Шинэчлэх
         </button>
       </form>
+      <button
+        onClick={() =>
+          isWished ? removeFromWishlist(product._id) : addToWishlist(product)
+        }
+        className={`w-full border py-4 rounded-full font-semibold text-lg transition ${
+          isWished
+            ? "bg-red-100 text-red-600 border-red-200"
+            : "border-gray-300 text-gray-900 hover:border-blue-400"
+        }`}
+      >
+        {isWished ? "♥ Хүслийн жагсаалтад байгаа" : "♡ Хүслийн жагсаалтанд нэмэх"}
+      </button>
     </div>
   )
 }

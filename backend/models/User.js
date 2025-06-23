@@ -10,6 +10,12 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
   image: { type: String, default: '' },
+  wishlist: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    }
+  ]
 }, { timestamps: true });
 
 export default mongoose.model('User', userSchema);

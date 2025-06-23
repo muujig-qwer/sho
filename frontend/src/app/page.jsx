@@ -6,12 +6,15 @@ import FeaturedCarousel from "@/components/FeaturedCarousel";
 import CategorySlider from "@/components/CategorySlider";
 import DiscountSlider from "@/components/DiscountSlider";
 import BrandProductSlider from "@/components/BrandProductSlider";
+import { FaHeart } from "react-icons/fa";
+import { useWishlist } from "@/context/WishlistContext";
 
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [openParent, setOpenParent] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,19 +43,19 @@ export default function HomePage() {
   );
 
   return (
-    <div className="bg-white text-gray-800 font-montserrat">
+    <div className=" text-gray-800 font-montserrat">
       {/* Category Slider - Hero section-ий ДЭЭР */}
       <section className="max-w-7xl mx-auto px-4 pt-6">
         <CategorySlider categories={parentCategories} />
       </section>
 
       {/* Hero section-ийг устгаад DiscountSlider-ийг оруулна */}
-      <section className="max-w-7xl mx-auto px-4 pt-6 bg-white rounded-xl shadow">
+      <section className="max-w-7xl mx-auto px-4 pt-0 bg-white rounded-xl shadow">
         <DiscountSlider products={featuredProducts} />
       </section>
 
       {/* Brand Product Sliders */}
-      <section className="max-w-7xl mx-auto  px-4 py-8 space-y-12">
+      <section className="max-w-7xl mx-auto  px-4 pt-0 mt-8 bg-white rounded-xl shadow">
         {/* Dreame брэндийн бараа */}
         <BrandProductSlider 
           products={featuredProducts}
@@ -61,6 +64,7 @@ export default function HomePage() {
         
         {/* Apple брэндийн бараа */}
         <BrandProductSlider 
+          brand="Apple"
           products={featuredProducts}
           showViewAll={true}
         />
@@ -129,34 +133,50 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-6">
-            {featuredProducts.slice(0, 4).map((product) => (
-              <div key={product._id} className="group">
-                <Link href={`/products/${product._id}`}>
-                  <div className="relative overflow-hidden rounded-xl aspect-square bg-gray-100">
-                    <img
-                      src={
-                        product.images && product.images.length > 0
-                          ? product.images[0]
-                          : product.image
-                          ? product.image
-                          : "/placeholder.png"
-                      }
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    {/* Нэр, үнэ зураг дотор байрлана */}
-                    <div className="absolute bottom-0 left-0 w-full text-black px-4 py-2">
-                      <h3 className="font-medium text-sm sm:text-base">
-                        {product.name}
-                      </h3>
-                      <p className="text-black-200 text-sm">
-                        {product.price?.toLocaleString()}₮
-                      </p>
+            {featuredProducts.slice(0, 4).map((product) => {
+              const isWished = wishlist.some((p) => p._id === product._id);
+              return (
+                <div key={product._id} className="group relative">
+                  <Link href={`/products/${product._id}`}>
+                    <div className="relative overflow-hidden rounded-xl aspect-square bg-gray-100">
+                      <img
+                        src={
+                          product.images && product.images.length > 0
+                            ? product.images[0]
+                            : product.image
+                            ? product.image
+                            : "/placeholder.png"
+                        }
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      {/* Нэр, үнэ зураг дотор байрлана */}
+                      <div className="absolute bottom-0 left-0 w-full text-black px-4 py-2">
+                        <h3 className="font-medium text-sm sm:text-base">
+                          {product.name}
+                        </h3>
+                        <p className="text-black-200 text-sm">
+                          {product.price?.toLocaleString()}₮
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  </Link>
+                  <button
+                    onClick={() =>
+                      isWished
+                        ? removeFromWishlist(product._id)
+                        : addToWishlist(product)
+                    }
+                    className={`absolute top-2 right-2 p-2 rounded-full bg-white shadow transition ${
+                      isWished ? "text-red-500" : "text-gray-400 hover:text-red-500"
+                    }`}
+                    aria-label="Wishlist"
+                  >
+                    <FaHeart />
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

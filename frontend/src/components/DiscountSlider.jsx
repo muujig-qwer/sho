@@ -6,8 +6,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { useWishlist } from "@/context/WishlistContext";
+import { useCart } from "@/context/CartContext"; // cart context байгаа бол
 
 export default function DiscountSlider({ products }) {
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart(); // cart context байгаа бол
+
   if (!products || products.length === 0) return null;
 
   return (
@@ -43,80 +48,96 @@ export default function DiscountSlider({ products }) {
           }}
           className="discount-slider"
         >
-          {products.map((product) => (
-            <SwiperSlide key={product._id}>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300">
-                {/* Product Image */}
-                <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                  <img
-                    src={
-                      product.images && product.images.length > 0
-                        ? product.images[0]
-                        : product.image
-                        ? product.image
-                        : "/placeholder.png"
-                    }
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  {/* Discount Badge */}
-                  {product.discount && (
-                    <div className="absolute top-3 left-3 flex items-center gap-1">
-                      <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">
-                        -{product.discount}%
-                      </span>
-                      {/* Installment Badge */}
-                      <span className="bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
-                        <span className="text-[10px]">⚡</span>
-                        М
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Wishlist Button */}
-                  <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow">
-                    <Heart size={16} className="text-gray-400 hover:text-red-500 transition-colors" />
-                  </button>
-                </div>
-
-                {/* Product Info */}
-                <div className="p-4">
-                  {/* Price */}
-                  <div className="mb-2">
-                    {product.discountPrice ? (
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold text-gray-900">
-                            {product.discountPrice.toLocaleString()}₮
+          {products.map((product) => {
+            const isWished = wishlist.some((p) => p._id === product._id);
+            return (
+              <SwiperSlide key={product._id}>
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300">
+                  {/* Product Image + Link */}
+                  <Link href={`/products/${product._id}`}>
+                    <div className="relative aspect-square bg-gray-50 overflow-hidden cursor-pointer">
+                      <img
+                        src={
+                          product.images && product.images.length > 0
+                            ? product.images[0]
+                            : product.image
+                            ? product.image
+                            : "/placeholder.png"
+                        }
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* Discount Badge */}
+                      {product.discount && (
+                        <div className="absolute top-3 left-3 flex items-center gap-1">
+                          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">
+                            -{product.discount}%
                           </span>
-                          <span className="line-through text-gray-400 text-sm">
-                            {product.price?.toLocaleString()}₮
+                          <span className="bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+                            <span className="text-[10px]">⚡</span>
+                            М
                           </span>
                         </div>
-                      </div>
-                    ) : (
-                      <span className="text-lg font-bold text-gray-900">
-                        {product.price?.toLocaleString()}₮
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Product Name */}
-                  <Link href={`/products/${product._id}`}>
-                    <h3 className="font-medium text-gray-800 text-sm line-clamp-2 hover:text-blue-600 transition-colors leading-relaxed">
-                      {product.name}
-                    </h3>
+                      )}
+                    </div>
                   </Link>
 
-                  {/* Store Name */}
-                  <p className="text-xs text-gray-500 mt-2 bg-gray-50 px-2 py-1 rounded text-center">
-                    Сагсlax
-                  </p>
+                  {/* Wishlist Button */}
+                  <button
+                    className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
+                    onClick={() =>
+                      isWished
+                        ? removeFromWishlist(product._id)
+                        : addToWishlist(product)
+                    }
+                  >
+                    <Heart
+                      size={16}
+                      className={isWished ? "text-red-500" : "text-gray-400"}
+                      fill={isWished ? "red" : "none"}
+                    />
+                  </button>
+
+                  {/* Product Info */}
+                  <div className="p-4">
+                    {/* Price */}
+                    <div className="mb-2">
+                      {product.discountPrice ? (
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg font-bold text-gray-900">
+                              {product.discountPrice.toLocaleString()}₮
+                            </span>
+                            <span className="line-through text-gray-400 text-sm">
+                              {product.price?.toLocaleString()}₮
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-lg font-bold text-gray-900">
+                          {product.price?.toLocaleString()}₮
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Product Name */}
+                    <Link href={`/products/${product._id}`}>
+                      <h3 className="font-medium text-gray-800 text-sm line-clamp-2 hover:text-blue-600 transition-colors leading-relaxed cursor-pointer">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    {/* Add to Cart Button */}
+                    <button
+                      className="w-full bg-blue-600 text-white py-2 rounded mt-2 hover:bg-blue-700 transition"
+                      onClick={() => addToCart(product)}
+                    >
+                      🛒 Сагслах
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
 
         {/* Custom Navigation Buttons */}

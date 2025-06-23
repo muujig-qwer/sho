@@ -34,6 +34,7 @@ import {
   FaLeaf,
 } from "react-icons/fa";
 import { useSession, signOut } from "next-auth/react";
+import { useWishlist } from "@/context/WishlistContext";
 
 function CategoryIcon({ icon: Icon, label, href, isActive = false }) {
   return (
@@ -53,6 +54,7 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const { wishlist } = useWishlist();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -123,7 +125,7 @@ export default function Navbar() {
                 href="/"
                 className="text-2xl font-bold text-green-600 hover:text-green-700 transition-colors"
               >
-                FreshPack
+                11111
               </Link>
             </div>
 
@@ -173,8 +175,13 @@ export default function Navbar() {
                           </Link>
                         </>
                       )}
-                      <Link href="/favorites" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+                      <Link href="/favorites" className="relative p-2 text-gray-600 hover:text-green-600 transition-colors">
                         <FaHeart className="h-5 w-5" />
+                        {wishlist.length > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+                            {wishlist.length}
+                          </span>
+                        )}
                       </Link>
                       <Link href="/notifications" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
                         <FaBell className="h-5 w-5" />

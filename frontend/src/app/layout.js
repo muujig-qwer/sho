@@ -2,8 +2,10 @@
 import './globals.css'
 import { SessionProvider } from "next-auth/react"
 import { CartProvider } from '@/context/CartContext'
+import { WishlistProvider } from "@/context/WishlistContext";
 import { usePathname } from 'next/navigation'
 import Navbar from '@/components/Navbar'
+import Footer from "@/components/Footer";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname()
@@ -14,11 +16,14 @@ export default function RootLayout({ children }) {
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-montserrat">
+      <body className="font-montserrat bg-red-100">
         <SessionProvider>
           <CartProvider>
-            {!hideNavbar && <Navbar />}
-            <main>{children}</main>
+            <WishlistProvider>
+              {!hideNavbar && <Navbar />}
+              <main>{children}</main>
+              <Footer />
+            </WishlistProvider>
           </CartProvider>
         </SessionProvider>
       </body>

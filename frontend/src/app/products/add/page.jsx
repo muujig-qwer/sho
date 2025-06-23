@@ -16,6 +16,7 @@ export default function AddProductPage() {
   const [category, setCategory] = useState('')
   const [sizes, setSizes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
+  const [discount, setDiscount] = useState('') // 1. discount state нэмэх
   const router = useRouter()
 
   useEffect(() => {
@@ -75,12 +76,11 @@ export default function AddProductPage() {
       formData.append('price', price)
       formData.append('description', description)
       formData.append('category', category)
+      formData.append('discount', discount) // 2. discount-ийг formData-д нэмэх
       images.forEach((img) => formData.append('images', img))
-      // Зурагны URL-уудыг массив хэлбэрээр илгээнэ
       imageUrls
         .filter((url) => url.trim() !== '')
         .forEach((url) => formData.append('imageUrls', url))
-      // Хэмжээг массив хэлбэрээр илгээнэ
       sizes.forEach((size) => formData.append('sizes', size))
 
       await axios.post(
@@ -123,6 +123,16 @@ export default function AddProductPage() {
           onChange={(e) => setPrice(e.target.value)}
           className="w-full border p-2 rounded"
           required
+        />
+        {/* 3. Discount input талбар нэмэх */}
+        <input
+          type="number"
+          placeholder="Хөнгөлөлт (%)"
+          value={discount}
+          onChange={(e) => setDiscount(e.target.value)}
+          className="w-full border p-2 rounded"
+          min={0}
+          max={100}
         />
         <textarea
           placeholder="Тайлбар"

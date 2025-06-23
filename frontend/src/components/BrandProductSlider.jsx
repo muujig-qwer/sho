@@ -6,15 +6,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Heart, Star, Clock, Home } from "lucide-react";
+import { useWishlist } from "@/context/WishlistContext";
+import { useCart } from "@/context/CartContext";
 
 export default function BrandProductSlider({ 
   brand, 
   products, 
   showViewAll = true 
 }) {
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+
   if (!products || products.length === 0) return null;
 
-  // Filter products by brand if specified
   const filteredProducts = brand 
     ? products.filter(product => 
         product.brand?.toLowerCase() === brand.toLowerCase()
@@ -26,7 +30,7 @@ export default function BrandProductSlider({
   return (
     <div className="w-full py-8 relative">
       {/* Brand Header */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 relative p-10 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* Brand Logo */}
@@ -35,7 +39,6 @@ export default function BrandProductSlider({
                 {brand ? brand.charAt(0).toUpperCase() : 'B'}
               </span>
             </div>
-            
             {/* Brand Info */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 capitalize">
@@ -61,8 +64,6 @@ export default function BrandProductSlider({
               </div>
             </div>
           </div>
-
-          {/* View All Link */}
           {showViewAll && (
             <Link 
               href={`/brands/${brand?.toLowerCase()}`} 
@@ -90,71 +91,91 @@ export default function BrandProductSlider({
             768: { slidesPerView: 3, spaceBetween: 20 },
             1024: { slidesPerView: 4, spaceBetween: 24 },
             1280: { slidesPerView: 5, spaceBetween: 24 },
+            1536: { slidesPerView: 6, spaceBetween: 24 },
           }}
           className="brand-product-slider"
         >
-          {filteredProducts.map((product, index) => (
-            <SwiperSlide key={`${product._id}-${index}`}>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300">
-                {/* Product Image */}
-                <div className="relative aspect-square bg-gray-50 overflow-hidden">
-                  <img
-                    src={
-                      product.images && product.images.length > 0
-                        ? product.images[0]
-                        : product.image
-                        ? product.image
-                        : "/placeholder.png"
-                    }
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  {/* Installment Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
-                      <span className="text-[10px]">⚡</span>
-                      М
-                    </span>
+          {filteredProducts.map((product, index) => {
+            const isWished = wishlist.some((p) => p._id === product._id);
+            return (
+              <SwiperSlide key={`${product._id}-${index}`}>
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300">
+                  {/* Product Image + Wishlist */}
+                  <div className="relative aspect-square bg-gray-50 overflow-hidden cursor-pointer">
+                    <Link href={`/products/${product._id}`}>
+                      <img
+                        src={
+                          product.images && product.images.length > 0
+                            ? product.images[0]
+                            : product.image
+                            ? product.image
+                            : "/placeholder.png"
+                        }
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </Link>
+
+                    {/* Installment Badge */}
+                    <div className="absolute top-3 left-3 flex items-center gap-1">
+                      <span className="bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+                        <span className="text-[10px]">⚡</span>
+                        М
+                      </span>
+                    </div>
+
+                    {/* Wishlist Button */}
+                    <button
+                      className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
+                      onClick={() =>
+                        isWished
+                          ? removeFromWishlist(product._id)
+                          : addToWishlist(product)
+                      }
+                    >
+                      <Heart
+                        size={16}
+                        className={isWished ? "text-red-500" : "text-gray-400"}
+                        fill={isWished ? "red" : "none"}
+                      />
+                    </button>
                   </div>
 
-                  {/* Wishlist Button */}
-                  <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow opacity-0 group-hover:opacity-100">
-                    <Heart size={16} className="text-gray-400 hover:text-red-500 transition-colors" />
-                  </button>
-                </div>
+                  {/* Product Info */}
+                  <div className="p-4">
+                    {/* Price */}
+                    <div className="mb-2">
+                      <span className="text-lg font-bold text-gray-900">
+                        {product.price?.toLocaleString()}₮
+                      </span>
+                    </div>
 
-                {/* Product Info */}
-                <div className="p-4">
-                  {/* Price */}
-                  <div className="mb-2">
-                    <span className="text-lg font-bold text-gray-900">
-                      {product.price?.toLocaleString()}₮
-                    </span>
+                    {/* Product Name */}
+                    <Link href={`/products/${product._id}`}>
+                      <h3 className="font-medium text-gray-800 text-sm line-clamp-2 hover:text-blue-600 transition-colors leading-relaxed cursor-pointer">
+                        {product.name}
+                      </h3>
+                    </Link>
+
+                    {/* Product Details */}
+                    {product.specifications && (
+                      <p className="text-xs text-gray-500 line-clamp-1">
+                        {product.specifications}
+                      </p>
+                    )}
+
+                    {/* Add to Cart Button */}
+                    <button
+                      className="w-full bg-blue-600 text-white py-2 rounded mt-2 hover:bg-blue-700 transition"
+                      onClick={() => addToCart(product)}
+                    >
+                      🛒 Сагслах
+                    </button>
                   </div>
-
-                  {/* Product Name */}
-                  <Link href={`/products/${product._id}`}>
-                    <h3 className="font-medium text-gray-800 text-sm line-clamp-2 hover:text-blue-600 transition-colors leading-relaxed mb-1">
-                      {product.name}
-                    </h3>
-                  </Link>
-
-                  {/* Product Details */}
-                  {product.specifications && (
-                    <p className="text-xs text-gray-500 line-clamp-1">
-                      {product.specifications}
-                    </p>
-                  )}
-
-                  {/* Add to Cart Button */}
-                  <button className="w-full mt-3 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium py-2 px-4 rounded-lg transition-colors">
-                    Сагслах
-                  </button>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
 
         {/* Custom Navigation Buttons */}
@@ -171,19 +192,26 @@ export default function BrandProductSlider({
         .brand-product-slider .swiper-slide {
           height: auto;
         }
-        
         .line-clamp-1 {
           display: -webkit-box;
           -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
-        
         .line-clamp-2 {
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+        .swiper-button-prev-${brand}:hover,
+        .swiper-button-next-${brand}:hover {
+          transform: translateY(-50%) scale(1.05);
+        }
+        .swiper-button-prev-${brand}.swiper-button-disabled,
+        .swiper-button-next-${brand}.swiper-button-disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
         }
       `}</style>
     </div>

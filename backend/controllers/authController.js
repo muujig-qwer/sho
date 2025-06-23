@@ -108,5 +108,60 @@ export const createAdmin = async (req, res) => {
   }
 };
 
+// Wishlist-д нэмэх
+export const addToWishlist = async (req, res) => {
+  const { productId } = req.body;
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    // ObjectId болон string харьцуулалтаас сэргийлэх
+    const already = user.wishlist.map(id => id.toString()).includes(productId);
+    if (!already) {
+      user.wishlist.push(productId);
+      await user.save();
+    }
+    res.json(user.wishlist);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Wishlist-аас устгах
+export const removeFromWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    user.wishlist = user.wishlist.filter(
+      (id) => id.toString() !== req.params.productId
+    );
+    await user.save();
+    res.json(user.wishlist);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Wishlist-ийг авах
+export const getWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate('wishlist');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user.wishlist); 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getUserByEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 

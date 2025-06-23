@@ -25,7 +25,7 @@ export const getProductsByCategoryId = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, category, discount, discountPrice } = req.body;
+    const { name, price, description, category, discount } = req.body; // discountPrice-г эндээс авалгүй!
     let images = [];
 
     // Файлаар upload хийсэн зургууд
@@ -49,15 +49,19 @@ export const createProduct = async (req, res) => {
       else sizes = [req.body.sizes];
     }
 
+    const discountValue = Number(discount) || 0;
+    const priceValue = Number(price) || 0;
+    const discountPrice = discountValue > 0 ? Math.round(priceValue * (1 - discountValue / 100)) : priceValue;
+
     const product = await Product.create({
       name,
-      price,
+      price: priceValue,
       description,
       category,
       images,
       sizes,
-      discount,        // нэмэгдсэн
-      discountPrice,   // нэмэгдсэн
+      discount: discountValue,
+      discountPrice,
     });
     res.status(201).json(product);
   } catch (err) {

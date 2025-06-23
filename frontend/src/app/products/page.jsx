@@ -47,7 +47,7 @@ export default function ProductListPage() {
   };
 
   return (
-  <div className="min-h-screen bg-gray-50 py-26 px-4"> {/* navbar-ын доорх зайг авахын тулд py-16 ашиглав */}
+  <div className="min-h-screen bg-gray-50 py-26 px-4"> 
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-10">
         <h1 className="text-3xl font-bold text-gray-800">Бүтээгдэхүүнүүд</h1>

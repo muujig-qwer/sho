@@ -10,7 +10,6 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, account }) {
-      // Хэрвээ тухайн email бол admin гэж үзнэ
       if (token.email === "muujig165@gmail.com") {
         token.role = "admin"
       } else {
@@ -19,8 +18,21 @@ export const authOptions = {
       return token
     },
     async session({ session, token }) {
-      // Role-г session-д оруулна
       session.role = token.role
+
+      // Backend-ээс хэрэглэгчийн _id-г авах
+      if (session.user?.email) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/email/${session.user.email}`);
+          if (res.ok) {
+            const dbUser = await res.json();
+            session.user._id = dbUser._id;
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+
       return session
     },
   },

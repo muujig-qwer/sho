@@ -5,6 +5,19 @@ import { useRouter } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode'
 
 const defaultSizes = ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45']
+// 10 default өнгө массив
+const defaultColors = [
+  { name: "Хар", value: "#000000" },
+  { name: "Цагаан", value: "#FFFFFF" },
+  { name: "Улаан", value: "#FF0000" },
+  { name: "Хөх", value: "#0074D9" },
+  { name: "Шар", value: "#FFDC00" },
+  { name: "Ногоон", value: "#2ECC40" },
+  { name: "Бор", value: "#8B4513" },
+  { name: "Саарал", value: "#AAAAAA" },
+  { name: "Ягаан", value: "#FF69B4" },
+  { name: "Хүрэн", value: "#800000" },
+];
 
 export default function AddProductPage() {
   const [name, setName] = useState('')
@@ -17,6 +30,12 @@ export default function AddProductPage() {
   const [sizes, setSizes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
   const [discount, setDiscount] = useState('') // 1. discount state нэмэх
+  const [discountExpires, setDiscountExpires] = useState(""); // state нэмэх
+  const [stock, setStock] = useState(
+    defaultSizes.map(size => ({ size, quantity: 0 }))
+  );
+  const [colorStocks, setColorStocks] = useState([{ color: "", quantity: 0 }]);
+  const [stockType, setStockType] = useState("size"); // "size" эсвэл "color"
   const router = useRouter()
 
   useEffect(() => {
@@ -61,27 +80,64 @@ export default function AddProductPage() {
     setImageUrls([...imageUrls, ''])
   }
 
+  // Хэмжээ бүрийн үлдэгдэл өөрчлөх
+  const handleStockChange = (size, value) => {
+    setStock(prev =>
+      prev.map(s =>
+        s.size === size ? { ...s, quantity: Number(value) } : s
+      )
+    );
+  };
+
+  // Өнгөний үлдэгдэл өөрчлөх (field === "color" үед зөвхөн value-г хадгална)
+  const handleColorStockChange = (idx, field, value) => {
+    setColorStocks(prev =>
+      prev.map((item, i) =>
+        i === idx ? { ...item, [field]: field === "quantity" ? Number(value) : value } : item
+      )
+    );
+  };
+
+  // Өнгөний мөр нэмэх
+  const addColorStockRow = () => {
+    setColorStocks([...colorStocks, { color: "", quantity: 0 }]);
+  };
+
+  // Өнгөний мөр устгах
+  const removeColorStockRow = (idx) => {
+    setColorStocks(colorStocks.filter((_, i) => i !== idx));
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const token = localStorage.getItem('token')
+    e.preventDefault();
+    const token = localStorage.getItem('token');
     if (!token) {
-      alert('Нэвтэрч орно уу')
-      router.push('/login')
-      return
+      alert('Нэвтэрч орно уу');
+      router.push('/login');
+      return;
     }
 
     try {
-      const formData = new FormData()
-      formData.append('name', name)
-      formData.append('price', price)
-      formData.append('description', description)
-      formData.append('category', category)
-      formData.append('discount', discount) // 2. discount-ийг formData-д нэмэх
-      images.forEach((img) => formData.append('images', img))
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('price', price);
+      formData.append('description', description);
+      formData.append('category', category);
+      formData.append('discount', discount);
+      if (discountExpires) {
+        formData.append('discountExpires', new Date(discountExpires).toISOString());
+      }
+      images.forEach((img) => formData.append('images', img));
       imageUrls
         .filter((url) => url.trim() !== '')
-        .forEach((url) => formData.append('imageUrls', url))
-      sizes.forEach((size) => formData.append('sizes', size))
+        .forEach((url) => formData.append('imageUrls', url));
+      sizes.forEach((size) => formData.append('sizes', size));
+      // stock төрөлд тааруулж дамжуулах
+      if (stockType === "size") {
+        formData.append('stock', JSON.stringify(stock.filter(s => s.quantity > 0)));
+      } else {
+        formData.append('stock', JSON.stringify(colorStocks.filter(s => s.color && s.quantity > 0)));
+      }
 
       await axios.post(
         'http://localhost:5000/api/products',
@@ -92,11 +148,11 @@ export default function AddProductPage() {
             'Content-Type': 'multipart/form-data',
           },
         }
-      )
-      alert('Бүтээгдэхүүн нэмэгдлээ!')
-      router.push('/products')
+      );
+      alert('Бүтээгдэхүүн нэмэгдлээ!');
+      router.push('/products');
     } catch (err) {
-      alert('Алдаа гарлаа: ' + (err.response?.data?.message || 'Unknown error'))
+      alert('Алдаа гарлаа: ' + (err.response?.data?.message || 'Unknown error'));
     }
   }
 
@@ -133,6 +189,14 @@ export default function AddProductPage() {
           className="w-full border p-2 rounded"
           min={0}
           max={100}
+        />
+        {/* Хямдралын дуусах хугацаа input */}
+        <input
+          type="datetime-local"
+          placeholder="Хямдрал дуусах хугацаа"
+          value={discountExpires}
+          onChange={(e) => setDiscountExpires(e.target.value)}
+          className="w-full border p-2 rounded"
         />
         <textarea
           placeholder="Тайлбар"
@@ -181,37 +245,118 @@ export default function AddProductPage() {
           required
         >
           <option value="">Ангилал сонгох</option>
+          {/* Эхлээд parent category-уудыг харуулна */}
+          {categories
+            .filter((cat) => !cat.parent)
+            .map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          {/* Дараа нь subcategory-уудыг parent-тай нь хамт харуулна */}
           {categories
             .filter((cat) => cat.parent)
             .map((cat) => {
-              const parent = categories.find((c) => c._id === cat.parent)
-              const label = parent ? `${cat.name} (${parent.name})` : cat.name
+              const parent = categories.find((c) => c._id === cat.parent);
+              const label = parent ? `${parent.name} > ${cat.name}` : cat.name;
               return (
                 <option key={cat._id} value={cat._id}>
                   {label}
                 </option>
-              )
+              );
             })}
         </select>
+        {/* Үлдэгдлийн төрөл сонгох */}
         <div>
-          <label className="block font-medium mb-2">Хэмжээ</label>
-          <div className="grid grid-cols-5 gap-2">
-            {defaultSizes.map(size => (
-              <label key={size} className="flex items-center space-x-1">
-                <input
-                  type="checkbox"
-                  value={size}
-                  checked={sizes.includes(size)}
-                  onChange={e => {
-                    if (e.target.checked) setSizes([...sizes, size])
-                    else setSizes(sizes.filter(s => s !== size))
-                  }}
-                />
-                <span>{size}</span>
-              </label>
-            ))}
-          </div>
+          <label className="block font-medium mb-2">Үлдэгдлийн төрөл</label>
+          <select
+            value={stockType}
+            onChange={e => setStockType(e.target.value)}
+            className="border p-2 rounded"
+          >
+            <option value="size">Хэмжээгээр</option>
+            <option value="color">Өнгөөр</option>
+          </select>
         </div>
+        {/* Хэмжээ ба үлдэгдэл */}
+        {stockType === "size" && (
+          <div>
+            <label className="block font-medium mb-2">Хэмжээ ба үлдэгдэл</label>
+            <div className="grid grid-cols-2 gap-2">
+              {defaultSizes.map(size => (
+                <div key={size} className="flex items-center space-x-2">
+                  <span className="w-8">{size}</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={stock.find(s => s.size === size)?.quantity || 0}
+                    onChange={e => handleStockChange(size, e.target.value)}
+                    className="border p-2 rounded w-24"
+                    placeholder="Үлдэгдэл"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* Өнгө ба үлдэгдэл */}
+        {stockType === "color" && (
+          <div>
+            <label className="block font-medium mb-2">Өнгө ба үлдэгдэл</label>
+            <div className="space-y-2">
+              {colorStocks.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  {/* Өнгө сонгох select */}
+                  <select
+                    value={item.color}
+                    onChange={e => handleColorStockChange(idx, "color", e.target.value)}
+                    className="border p-2 rounded w-36"
+                    required
+                  >
+                    <option value="">Өнгө сонгох</option>
+                    {defaultColors.map((color) => (
+                      <option key={color.value} value={color.value}>
+                        {color.name}
+                      </option>
+                    ))}
+                  </select>
+                  {/* Өнгөний preview */}
+                  {item.color && (
+                    <span
+                      className="inline-block w-6 h-6 rounded-full border"
+                      style={{ backgroundColor: item.color }}
+                    ></span>
+                  )}
+                  <input
+                    type="number"
+                    min={0}
+                    placeholder="Үлдэгдэл"
+                    value={item.quantity}
+                    onChange={e => handleColorStockChange(idx, "quantity", e.target.value)}
+                    className="border p-2 rounded w-20"
+                    required
+                  />
+                  {colorStocks.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeColorStockRow(idx)}
+                      className="px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                    >
+                      x
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addColorStockRow}
+                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 mt-1"
+              >
+                + Өнгө нэмэх
+              </button>
+            </div>
+          </div>
+        )}
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

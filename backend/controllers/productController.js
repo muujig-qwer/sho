@@ -25,7 +25,7 @@ export const getProductsByCategoryId = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, category, discount } = req.body; // discountPrice-г эндээс авалгүй!
+    const { name, price, description, category, stock, discount, discountExpires } = req.body;
     let images = [];
 
     // Файлаар upload хийсэн зургууд
@@ -49,6 +49,16 @@ export const createProduct = async (req, res) => {
       else sizes = [req.body.sizes];
     }
 
+    // stock нь string хэлбэрээр ирвэл parse хийнэ
+    let parsedStock = [];
+    if (stock) {
+      if (typeof stock === "string") {
+        parsedStock = JSON.parse(stock);
+      } else {
+        parsedStock = stock;
+      }
+    }
+
     const discountValue = Number(discount) || 0;
     const priceValue = Number(price) || 0;
     const discountPrice = discountValue > 0 ? Math.round(priceValue * (1 - discountValue / 100)) : priceValue;
@@ -58,10 +68,12 @@ export const createProduct = async (req, res) => {
       price: priceValue,
       description,
       category,
+      stock: parsedStock, // энд зөв дамжуулна
       images,
       sizes,
       discount: discountValue,
       discountPrice,
+      discountExpires,
     });
     res.status(201).json(product);
   } catch (err) {
@@ -91,16 +103,20 @@ export const getProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, category, discount, discountPrice } = req.body;
-    let images = [];
-    if (req.files && req.files.length > 0) {
-      images = req.files.map((file) => file.filename);
+    const { name, price, description, category, discount, discountPrice, discountExpires, stock } = req.body;
+
+    // stock нь string хэлбэрээр ирвэл parse хийнэ
+    let parsedStock = [];
+    if (stock) {
+      if (typeof stock === "string") {
+        parsedStock = JSON.parse(stock);
+      } else {
+        parsedStock = stock;
+      }
     }
-    let sizes = [];
-    if (req.body.sizes) {
-      if (Array.isArray(req.body.sizes)) sizes = req.body.sizes;
-      else sizes = [req.body.sizes];
-    }
+
+    // ...sizes, images гэх мэт бусад талбарууд...
+
     const product = await Product.findByIdAndUpdate(
       req.params.id,
       {
@@ -108,10 +124,11 @@ export const updateProduct = async (req, res) => {
         price,
         description,
         category,
-        ...(images.length > 0 && { images }),
-        sizes,
-        discount,        // нэмэгдсэн
-        discountPrice,   // нэмэгдсэн
+        stock: parsedStock, // зөв дамжуулна
+        // бусад талбарууд...
+        discount,
+        discountPrice,
+        discountExpires,
       },
       { new: true }
     );

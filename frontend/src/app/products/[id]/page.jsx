@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { useCart } from "@/context/CartContext";
@@ -72,6 +72,9 @@ export default function ProductDetailPage() {
   const [commentAuthor, setCommentAuthor] = useState("");
   const [rating, setRating] = useState(5);
   const [commentsLoading, setCommentsLoading] = useState(false);
+  const [countdown, setCountdown] = useState("");
+  const [animate, setAnimate] = useState(false);
+  const countdownRef = useRef();
 
   const { addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
@@ -105,6 +108,18 @@ export default function ProductDetailPage() {
       fetchComments();
     }
   }, [id, router]);
+
+  useEffect(() => {
+    if (!product?.discountExpires) return;
+    const updateCountdown = () => {
+      setCountdown(getDiscountCountdown(product.discountExpires));
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 200); // 200ms pulse
+    };
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
+  }, [product?.discountExpires]);
 
   const handleAddToCart = () => {
     if (product.category === "shoes" && !selectedSize) {
@@ -164,6 +179,32 @@ export default function ProductDetailPage() {
     });
   };
 
+  function getDiscountCountdown(expiryDate) {
+    if (!expiryDate) return null;
+    const now = new Date();
+    const end = new Date(expiryDate);
+    const diff = end - now;
+    if (diff <= 0) return "Хямдрал дууссан";
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+    return `${days > 0 ? days + " өдөр " : ""}${hours} цаг ${minutes} мин ${seconds} сек үлдлээ`;
+  }
+
+  // Сонгосон size-ийн үлдэгдэл авах функц
+  function getStockBySize(size) {
+    if (!product?.stock) return 0;
+    const found = product.stock.find((s) => s.size === size);
+    return found ? found.quantity : 0;
+  }
+
+  useEffect(() => {
+    if (product) {
+      console.log("product.stock", product.stock);
+    }
+  }, [product]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -190,7 +231,7 @@ export default function ProductDetailPage() {
     "44",
     "45",
   ];
-  const availableSizes = product.sizes || [];
+  const availableSizes = product.stock ? product.stock.map(s => s.size) : [];
 
   // Дундаж үнэлгээ
   const avgRating =
@@ -265,33 +306,52 @@ export default function ProductDetailPage() {
             {/* Product Info, Title, Price, Size, Add to cart гэх мэт */}
             <div className="space-y-10">
               {/* Product Title & Price */}
-              <div className="space-y-3">
-                <h1 className="text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+              <div className="space-y-2">
+                <h1 className="text-xl font-bold text-gray-900 leading-tight tracking-tight">
                   {product.name}
                 </h1>
                 <div>
                   {product.discount > 0 ? (
-                    <div className="flex items-end gap-3">
-                      <span className="text-3xl font-bold text-green-700">
-                        {product.discountPrice?.toLocaleString()}₮
-                      </span>
-                      <span className="line-through text-gray-400 text-xl font-semibold">
-                        {product.price?.toLocaleString()}₮
-                      </span>
-                      <span className="ml-2 px-2 py-1 bg-red-100 text-red-600 text-sm font-bold rounded">
-                        -{product.discount}%
-                      </span>
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex items-end gap-1">
+                        <span className="text-base font-bold text-green-700">
+                          {product.discountPrice?.toLocaleString()}₮
+                        </span>
+                        <span className="line-through text-gray-400 text-xs font-semibold">
+                          {product.price?.toLocaleString()}₮
+                        </span>
+                        <span className="ml-1 px-1 py-0.5 bg-red-100 text-red-600 text-xs font-bold rounded">
+                          -{product.discount}%
+                        </span>
+                      </div>
+                      {/* Хэмнэлт */}
+                      {product.discountPrice && product.price && (
+                        <div className="text-xs text-green-600 font-semibold mt-0.5">
+                          Хэмнэлт: {(product.price - product.discountPrice).toLocaleString()}₮
+                        </div>
+                      )}
+                      {/* Хямдралын хугацаа */}
+                      {product.discountExpires && (
+                        <div
+                          ref={countdownRef}
+                          className={`text-[10px] text-red-500 font-semibold mt-0.5 transition-transform duration-200 ${
+                            animate ? "scale-110" : ""
+                          }`}
+                        >
+                          ⏰ {countdown}
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <p className="text-3xl font-bold text-green-700">
+                    <p className="text-base font-bold text-green-700">
                       {product.price?.toLocaleString()}₮
                     </p>
                   )}
-                  <div className="flex items-center space-x-1 mt-2">
+                  <div className="flex items-center space-x-0.5 mt-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <span
                         key={star}
-                        className={`text-xl ${
+                        className={`text-xs ${
                           avgRating >= star
                             ? "text-yellow-400"
                             : "text-gray-300"
@@ -300,7 +360,7 @@ export default function ProductDetailPage() {
                         ★
                       </span>
                     ))}
-                    <span className="ml-2 font-semibold text-gray-700">
+                    <span className="ml-1 font-semibold text-gray-700 text-xs">
                       {avgRating}
                     </span>
                   </div>
@@ -309,28 +369,27 @@ export default function ProductDetailPage() {
 
               {/* Product Description */}
               {product.description && (
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-gray-900">Тайлбар</h3>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
+                <div className="space-y-1">
+                  <h3 className="font-semibold text-gray-900 text-xs">Тайлбар</h3>
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line text-xs">
                     {product.description}
                   </p>
                 </div>
               )}
 
-              {/* Size Selection */}
-              {product.sizes && product.sizes.length > 0 && (
-                <div className="space-y-4 pt-8 border-t border-gray-200">
-                  <h3 className="font-medium text-gray-900">Хэмжээ</h3>
-                  <div className="grid grid-cols-5 gap-2">
+              {/* Size Selection */} 
+                <div className="space-y-2 pt-4 border-t border-gray-200">
+                  <h3 className="font-medium text-gray-900 text-xs">Хэмжээ</h3>
+                  <div className="grid grid-cols-5 gap-1">
                     {allSizes.map((size) => {
-                      const isAvailable = availableSizes.includes(size);
+                      const isAvailable = availableSizes.includes(size) && getStockBySize(size) > 0;
                       return (
                         <button
                           key={size}
                           type="button"
                           disabled={!isAvailable}
                           onClick={() => isAvailable && setSelectedSize(size)}
-                          className={`py-3 px-4 border rounded-lg text-center font-medium transition-all
+                          className={`py-1 px-2 border rounded text-xs font-medium transition-all
                             ${
                               selectedSize === size && isAvailable
                                 ? "border-gray-900 bg-gray-900 text-white"
@@ -344,29 +403,39 @@ export default function ProductDetailPage() {
                           `}
                         >
                           {size}
+                          {/* Үлдэгдэл badge */}
+                          <span className="block text-[10px] mt-0.5">
+                            {getStockBySize(size)}ш
+                          </span>
                         </button>
                       );
                     })}
                   </div>
+                  {/* Сонгосон size-ийн үлдэгдэл */}
+                  {selectedSize && (
+                    <div className="mt-1 text-xs text-gray-600">
+                      Үлдэгдэл: <span className="font-bold">{getStockBySize(selectedSize)}</span> ширхэг
+                    </div>
+                  )}
                 </div>
-              )}
+              
 
               {/* Quantity */}
-              <div className="space-y-2">
-                <h3 className="font-semibold text-gray-900">Тоо ширхэг</h3>
-                <div className="flex items-center space-x-4">
+              <div className="space-y-1">
+                <h3 className="font-semibold text-gray-900 text-xs">Тоо ширхэг</h3>
+                <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center text-2xl font-bold hover:bg-gray-100 transition"
+                    className="w-7 h-7 border border-gray-300 rounded-full flex items-center justify-center text-base font-bold hover:bg-gray-100 transition"
                   >
                     -
                   </button>
-                  <span className="font-bold text-xl w-10 text-center">
+                  <span className="font-bold text-base w-7 text-center">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center text-2xl font-bold hover:bg-gray-100 transition"
+                    className="w-7 h-7 border border-gray-300 rounded-full flex items-center justify-center text-base font-bold hover:bg-gray-100 transition"
                   >
                     +
                   </button>
@@ -374,31 +443,12 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Add to Cart Button */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <button
                   onClick={handleAddToCart}
-                  className="w-full bg-blue-700 text-white py-4 rounded-full font-bold text-lg shadow hover:bg-blue-800 transition"
+                  className="w-full bg-blue-700 text-white py-2 rounded-full font-bold text-base shadow hover:bg-blue-800 transition"
                 >
                   🛒 Сагсанд нэмэх
-                </button>
-
-                {/* Wishlist Button */}
-                <button
-                  onClick={() => {
-                    console.log("Wishlist товч дарагдлаа");
-                    if (isWished) {
-                      removeFromWishlist(product._id);
-                    } else {
-                      addToWishlist(product);
-                    }
-                  }}
-                  className={`w-full border border-gray-300 text-gray-900 py-4 rounded-full font-semibold text-lg hover:border-blue-400 transition ${
-                    isWished ? "bg-red-100 text-red-600 border-red-200" : ""
-                  }`}
-                >
-                  {isWished
-                    ? "♥ Хүслийн жагсаалтад байгаа"
-                    : "♡ Хүслийн жагсаалтанд нэмэх"}
                 </button>
               </div>
             </div>
@@ -411,9 +461,9 @@ export default function ProductDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
               {/* 1-р perk */}
               <div className="flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-200 py-8 w-full">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                   <svg
-                    className="w-8 h-8 text-blue-600"
+                    className="w-5 h-5 text-blue-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -426,20 +476,20 @@ export default function ProductDetailPage() {
                     />
                   </svg>
                 </div>
-                <div className="mt-4 text-center">
-                  <h3 className="font-bold text-gray-900 text-lg mb-2">
+                <div className="mt-2 text-center">
+                  <h3 className="font-bold text-gray-900 text-xs mb-1">
                     ҮНЭГҮЙ ХҮРГЭЛТ
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-[11px]">
                     100,000₮-аас дээш захиалгад
                   </p>
                 </div>
               </div>
               {/* 2-р perk */}
               <div className="flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-200 py-8 w-full">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                   <svg
-                    className="w-8 h-8 text-green-600"
+                    className="w-5 h-5 text-green-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -452,18 +502,18 @@ export default function ProductDetailPage() {
                     />
                   </svg>
                 </div>
-                <div className="mt-4 text-center">
-                  <h3 className="font-bold text-gray-900 text-lg mb-2">
+                <div className="mt-2 text-center">
+                  <h3 className="font-bold text-gray-900 text-xs mb-1">
                     ХЯЛБАР БУЦААЛТ
                   </h3>
-                  <p className="text-gray-600 text-sm">30 хоногийн дотор</p>
+                  <p className="text-gray-600 text-[11px]">30 хоногийн дотор</p>
                 </div>
               </div>
               {/* 3-р perk */}
               <div className="flex flex-col items-center justify-center py-8 w-full">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                   <svg
-                    className="w-8 h-8 text-purple-600"
+                    className="w-5 h-5 text-purple-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -482,8 +532,8 @@ export default function ProductDetailPage() {
                     />
                   </svg>
                 </div>
-                <div className="mt-4 text-center">
-                  <h3 className="font-bold text-gray-900 text-lg mb-2">
+                <div className="mt-2 text-center">
+                  <h3 className="font-bold text-gray-900 text-xs mb-1">
                     ДЭЛГҮҮРТ ЗОЧЛОХ
                   </h3>
                   <p className="text-gray-600 text-sm underline cursor-pointer hover:text-blue-600">
@@ -546,36 +596,36 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Comment List - Дараа нь */}
-            <div className="space-y-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6 tracking-tight">
+            <div className="space-y-4">
+              <h2 className="text-base font-bold text-gray-900 mb-3 tracking-tight">
                 Сэтгэгдлүүд
               </h2>
               {comments.length === 0 ? (
-                <div className="text-center text-gray-400 py-8 border rounded-lg">
+                <div className="text-center text-gray-400 py-4 border rounded-lg text-xs">
                   Одоогоор сэтгэгдэл байхгүй байна.
                 </div>
               ) : (
                 comments.map((comment, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-4 border-b last:border-b-0 border-gray-100 pb-6"
+                    className="flex items-start gap-2 border-b last:border-b-0 border-gray-100 pb-3"
                   >
-                    <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500 text-lg">
+                    <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-500 text-xs">
                       {comment.author?.charAt(0)?.toUpperCase() || "A"}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-gray-800">
+                      <div className="flex items-center gap-1 mb-0.5">
+                        <span className="font-semibold text-gray-800 text-xs">
                           {comment.author}
                         </span>
-                        <span className="text-xs text-gray-400">
+                        <span className="text-[10px] text-gray-400">
                           {formatDate(comment.date)}
                         </span>
-                        <div className="flex items-center ml-2">
+                        <div className="flex items-center ml-1">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <span
                               key={star}
-                              className={`text-sm ${
+                              className={`text-[10px] ${
                                 star <= comment.rating
                                   ? "text-yellow-400"
                                   : "text-gray-200"
@@ -586,7 +636,7 @@ export default function ProductDetailPage() {
                           ))}
                         </div>
                       </div>
-                      <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                      <div className="text-gray-700 text-xs leading-relaxed whitespace-pre-line">
                         <ReactMarkdown>{comment.comment}</ReactMarkdown>
                       </div>
                     </div>

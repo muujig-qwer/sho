@@ -42,6 +42,11 @@ export default function HomePage() {
     (p) => p.discount && p.discountPrice
   );
 
+  const featuredCategoryId = "685a77b1a79b80fa8a74a637";
+  const featuredCategoryProducts = featuredProducts.filter(
+    (p) => p.category === featuredCategoryId || (p.category?._id === featuredCategoryId)
+  );
+
   return (
     <div className=" text-gray-800 font-montserrat">
       {/* Category Slider - Hero section-ий ДЭЭР */}
@@ -56,130 +61,18 @@ export default function HomePage() {
 
       {/* Brand Product Sliders */}
       <section className="max-w-7xl mx-auto  px-4 pt-0 mt-8 bg-white rounded-xl shadow">
-        {/* Dreame брэндийн бараа */}
-        <BrandProductSlider 
-          products={featuredProducts}
+        {/* Зөвхөн 685a77b1a79b80fa8a74a637 category-тай бүтээгдэхүүнүүд */}
+        <BrandProductSlider
+          brand={"Tsahilgaan baraa"}
+          products={featuredCategoryProducts}
           showViewAll={true}
         />
-        
-        {/* Apple брэндийн бараа */}
-        <BrandProductSlider 
-          brand="Apple"
-          products={featuredProducts}
-          showViewAll={true}
-        />
-        
-        {/* Samsung брэндийн бараа */}
-        <BrandProductSlider 
-          brand="Samsung" 
-          products={featuredProducts}
-          showViewAll={true}
-        />
-        
-        {/* Xiaomi брэндийн бараа */}
-        <BrandProductSlider 
-          brand="Xiaomi" 
-          products={featuredProducts}
-          showViewAll={true}
-        />
+        {/* Хэрвээ Apple, Samsung гэх мэт бусад брэнд slider-ууд хэрэггүй бол устгаарай */}
       </section>
 
-      {/* Уриа */}
-      <section
-        className="w-full h-[400px] bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center text-center text-white px-4"
-        style={{
-          backgroundImage:
-            "url('https://cdn.allbirds.com/image/upload/f_auto,q_auto,w_2053/cms/3gaucwAUA2KXTW2QeloccX/02d479630932580eb29bc1329e0ec6fd/24Q3_AugustCore_Statement_Module_Site_Desktop_IMG_2880x720.jpg')",
-        }}
-      >
-        <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-          Бид илүү сайныг илүү зөвөөр бүтээдэг
-        </h2>
-        <p className="max-w-2xl text-base md:text-lg mb-4">
-          Байгалийн ухаалаг шийдлээс сэдэвлэн бид тав тухтай, хэрэглэхэд таатай
-          бүтээгдэхүүн үйлдвэрлэж байна.
-        </p>
-        <div className="text-xl font-bold italic">
-          ECOshop{" "}
-          <span className="text-sm block font-normal">БАЙГАЛИЙН УХААНААР</span>
-        </div>
-      </section>
+      
 
-      {/* Онцлох хэсэг */}
-      <section className="w-screen px-4 pt-6 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="relative min-h-[500px] rounded-xl overflow-hidden flex">
-            <img
-              src="https://images.unsplash.com/photo-1612452830710-97cd38a7b6e8?q=80&w=1974&auto=format&fit=crop"
-              alt="Эцэгт зориулсан бэлэг"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="relative z-10 bg-black/40 p-8 md:p-12 text-white flex flex-col justify-center w-full">
-              <h3 className="text-3xl font-bold mb-2">
-                Танд хэрэгтэй бүх зүйл энд байна
-              </h3>
-              <p className="mb-4 text-base">
-                Сонгосон бүтээгдэхүүн, онцгой урамшууллууд
-              </p>
-              <div className="flex gap-4">
-                <button className="bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200">
-                  Онцлох бараа
-                </button>
-                <button className="bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200">
-                  Тусгай бэлгүүд
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-6">
-            {featuredProducts.slice(0, 4).map((product) => {
-              const isWished = wishlist.some((p) => p._id === product._id);
-              return (
-                <div key={product._id} className="group relative">
-                  <Link href={`/products/${product._id}`}>
-                    <div className="relative overflow-hidden rounded-xl aspect-square bg-gray-100">
-                      <img
-                        src={
-                          product.images && product.images.length > 0
-                            ? product.images[0]
-                            : product.image
-                            ? product.image
-                            : "/placeholder.png"
-                        }
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      {/* Нэр, үнэ зураг дотор байрлана */}
-                      <div className="absolute bottom-0 left-0 w-full text-black px-4 py-2">
-                        <h3 className="font-medium text-sm sm:text-base">
-                          {product.name}
-                        </h3>
-                        <p className="text-black-200 text-sm">
-                          {product.price?.toLocaleString()}₮
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                  <button
-                    onClick={() =>
-                      isWished
-                        ? removeFromWishlist(product._id)
-                        : addToWishlist(product)
-                    }
-                    className={`absolute top-2 right-2 p-2 rounded-full bg-white shadow transition ${
-                      isWished ? "text-red-500" : "text-gray-400 hover:text-red-500"
-                    }`}
-                    aria-label="Wishlist"
-                  >
-                    <FaHeart />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      
 
       {/* Онцлох carousel */}
       <h2 className="text-xl font-bold mb-1 mt-0">

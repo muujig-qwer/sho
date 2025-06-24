@@ -18,7 +18,7 @@ export default function Footer() {
           <p className="text-sm text-gray-600">
             7777-5020<br />
             9:00 - 22:00 (эхлээд бүр)<br />
-            info@freshpack.mn
+            info@
           </p>
         </div>
         <div>

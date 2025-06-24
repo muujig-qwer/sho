@@ -1,5 +1,6 @@
 import Order from '../models/Order.js'
 import User from '../models/User.js'
+import Product from '../models/Product.js'
 
 export const createOrder = async (req, res) => {
   try {
@@ -26,6 +27,13 @@ export const createOrder = async (req, res) => {
     })
 
     await order.save()
+
+    // Жишээ: захиалга баталгаажих үед
+    await Product.updateOne(
+      { _id: productId, "stock.size": size, "stock.color": color },
+      { $inc: { "stock.$.quantity": -orderQuantity } }
+    );
+
     res.status(201).json(order)
   } catch (err) {
     console.error('Order үүсгэхэд алдаа:', err)

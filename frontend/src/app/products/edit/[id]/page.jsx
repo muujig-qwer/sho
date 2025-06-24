@@ -18,6 +18,10 @@ export default function EditProductPage() {
   const [sizes, setSizes] = useState([]) // Шинэ нэмэлт
   const [isAdmin, setIsAdmin] = useState(false)
   const [discount, setDiscount] = useState('') // discount state нэмэх
+  const [discountExpires, setDiscountExpires] = useState(""); // 1. state нэмэх
+  const [stock, setStock] = useState(
+    defaultSizes.map(size => ({ size, quantity: 0 }))
+  );
   const router = useRouter()
   const { id } = useParams()
   const { addToWishlist, wishlist, removeFromWishlist } = useWishlist();
@@ -59,8 +63,22 @@ export default function EditProductPage() {
       if (res.data.sizes && res.data.sizes.length > 0) {
         setSizes(res.data.sizes)
       }
+      // Stock populate хийх
+      if (res.data.stock && res.data.stock.length > 0) {
+        setStock(
+          defaultSizes.map(size => {
+            const found = res.data.stock.find(s => s.size === size);
+            return { size, quantity: found ? found.quantity : 0 };
+          })
+        );
+      }
       // Discount утгыг populate хийх
       setDiscount(res.data.discount || '')
+      setDiscountExpires(
+        res.data.discountExpires
+          ? new Date(res.data.discountExpires).toISOString().slice(0, 16)
+          : ""
+      ); // 2. fetch хийхэд populate
     })
   }, [id])
 
@@ -79,6 +97,14 @@ export default function EditProductPage() {
     setImageUrls([...imageUrls, ''])
   }
 
+  const handleStockChange = (size, value) => {
+    setStock(prev =>
+      prev.map(s =>
+        s.size === size ? { ...s, quantity: Number(value) } : s
+      )
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const token = localStorage.getItem('token')
@@ -94,12 +120,16 @@ export default function EditProductPage() {
       formData.append('price', price)
       formData.append('description', description)
       formData.append('category', category)
-      formData.append('discount', discount) // discount-ийг formData-д нэмэх
+      formData.append("discount", discount);
+      if (discountExpires) {
+        formData.append("discountExpires", new Date(discountExpires).toISOString());
+      }
       images.forEach((img) => formData.append('images', img))
       imageUrls
         .filter((url) => url.trim() !== '')
         .forEach((url) => formData.append('imageUrls', url))
       sizes.forEach((size) => formData.append('sizes', size))
+      formData.append('stock', JSON.stringify(stock.filter(s => s.quantity > 0)));
 
       await axios.put(
         `http://localhost:5000/api/products/${id}`,
@@ -153,6 +183,14 @@ export default function EditProductPage() {
           className="w-full border p-2 rounded"
           min={0}
           max={100}
+        />
+        {/* 3. Expire date input талбар нэмэх */}
+        <input
+          type="datetime-local"
+          placeholder="Хямдрал дуусах хугацаа"
+          value={discountExpires}
+          onChange={(e) => setDiscountExpires(e.target.value)}
+          className="w-full border p-2 rounded"
         />
         <textarea
           placeholder="Тайлбар"
@@ -214,21 +252,20 @@ export default function EditProductPage() {
             })}
         </select>
         <div>
-          <label className="block font-medium mb-2">Хэмжээ</label>
-          <div className="grid grid-cols-5 gap-2">
+          <label className="block font-medium mb-2">Хэмжээ ба үлдэгдэл</label>
+          <div className="grid grid-cols-2 gap-2">
             {defaultSizes.map(size => (
-              <label key={size} className="flex items-center space-x-1">
+              <div key={size} className="flex items-center space-x-2">
+                <span className="w-8">{size}</span>
                 <input
-                  type="checkbox"
-                  value={size}
-                  checked={sizes.includes(size)}
-                  onChange={e => {
-                    if (e.target.checked) setSizes([...sizes, size])
-                    else setSizes(sizes.filter(s => s !== size))
-                  }}
+                  type="number"
+                  min={0}
+                  value={stock.find(s => s.size === size)?.quantity || 0}
+                  onChange={e => handleStockChange(size, e.target.value)}
+                  className="border p-2 rounded w-24"
+                  placeholder="Үлдэгдэл"
                 />
-                <span>{size}</span>
-              </label>
+              </div>
             ))}
           </div>
         </div>
@@ -239,18 +276,6 @@ export default function EditProductPage() {
           Шинэчлэх
         </button>
       </form>
-      <button
-        onClick={() =>
-          isWished ? removeFromWishlist(product._id) : addToWishlist(product)
-        }
-        className={`w-full border py-4 rounded-full font-semibold text-lg transition ${
-          isWished
-            ? "bg-red-100 text-red-600 border-red-200"
-            : "border-gray-300 text-gray-900 hover:border-blue-400"
-        }`}
-      >
-        {isWished ? "♥ Хүслийн жагсаалтад байгаа" : "♡ Хүслийн жагсаалтанд нэмэх"}
-      </button>
     </div>
   )
 }

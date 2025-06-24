@@ -11,9 +11,14 @@ import { useCart } from "@/context/CartContext"; // cart context байгаа б
 
 export default function DiscountSlider({ products }) {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { addToCart } = useCart(); // cart context байгаа бол
+  const { addToCart } = useCart();
 
-  if (!products || products.length === 0) return null;
+  // Зөвхөн хямдралтай бараануудыг шүүнэ
+  const discountedProducts = products
+    ? products.filter((p) => p.discount && p.discountPrice)
+    : [];
+
+  if (!discountedProducts || discountedProducts.length === 0) return null;
 
   return (
     <div className="w-full py-8 relative">
@@ -48,7 +53,7 @@ export default function DiscountSlider({ products }) {
           }}
           className="discount-slider"
         >
-          {products.map((product) => {
+          {discountedProducts.map((product) => {
             const isWished = wishlist.some((p) => p._id === product._id);
             return (
               <SwiperSlide key={product._id}>

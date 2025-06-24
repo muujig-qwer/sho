@@ -37,10 +37,10 @@ export default function ProfilePage() {
           <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-black">
             <span>📁</span> Хэтэвч
           </Link>
-          <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-black">
+          <Link href="/orders" className="flex items-center gap-2 text-gray-700 hover:text-black">
             <span>📦</span> Миний захиалгууд
           </Link>
-          <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-black">
+          <Link href="/favorites" className="flex items-center gap-2 text-gray-700 hover:text-black">
             <span>💚</span> Хүслийн жагсаалт
           </Link>
           <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-black">

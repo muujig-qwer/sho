@@ -43,8 +43,13 @@ export default function LoginPage() {
         password,
       })
 
-      // AuthContext болон localStorage-д token хадгалах
-      authLogin(res.data.token, res.data.user._id)
+      // AuthContext-д user мэдээллийг бүрэн дамжуулах
+      authLogin(res.data.token, res.data.user._id, {
+        email: res.data.user.email,
+        name: res.data.user.name,
+        role: res.data.user.role,
+        image: res.data.user.image
+      })
       setUserId(res.data.user._id)
 
       // State шинэчлэгдэхэд бага зэрэг хугацаа өгөхийн тулд delay

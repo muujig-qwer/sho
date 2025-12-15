@@ -64,9 +64,12 @@ export default function Navbar() {
 
   // Session ЭСВЭЛ localStorage token-оор нэвтэрсэн эсэхийг шалгах
   const isLoggedIn = !!session || !!user;
-  const isAdmin = session?.user?.email === "muujig165@gmail.com";
-  const userName = session?.user?.name || "";
-  const userRole = session?.role || (session?.user?.role ?? "");
+  
+  // Admin эсэхийг session ЭСВЭЛ localStorage user-аас шалгах
+  const isAdmin = session?.user?.email === "muujig165@gmail.com" || user?.email === "muujig165@gmail.com";
+  
+  const userName = session?.user?.name || user?.name || "";
+  const userRole = session?.role || session?.user?.role || user?.role || "";
 
   useEffect(() => {
     const handleScroll = () => {

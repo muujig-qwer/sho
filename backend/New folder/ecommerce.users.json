@@ -1,0 +1,84 @@
+[{
+  "_id": {
+    "$oid": "6854e8c32d36dfa26d76573b"
+  },
+  "name": "muujig165",
+  "email": "muujig165@gmail.com",
+  "role": "admin",
+  "image": "",
+  "createdAt": {
+    "$date": "2025-06-20T04:51:15.924Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-08T03:23:45.666Z"
+  },
+  "__v": 6,
+  "wishlist": [],
+  "wallet": 0
+},
+{
+  "_id": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "name": "muujigmunhjin13",
+  "email": "muujigmunhjin13@gmail.com",
+  "role": "user",
+  "image": "",
+  "createdAt": {
+    "$date": "2025-06-20T04:58:14.178Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-08T08:47:44.041Z"
+  },
+  "__v": 45,
+  "wishlist": [
+    {
+      "$oid": "684fc1e4e765e1b27c9db000"
+    },
+    {
+      "$oid": "684f896d3756ab9fdd1a7823"
+    },
+    {
+      "$oid": "68649dbd9110ea830821b764"
+    }
+  ],
+  "wallet": 75566157
+},
+{
+  "_id": {
+    "$oid": "68661342e573f804c28410c1"
+  },
+  "name": "acsu0330",
+  "email": "acsu0330@gmail.com",
+  "password": "7fxf1m4q",
+  "role": "delivery",
+  "image": "",
+  "wishlist": [],
+  "wallet": 0,
+  "createdAt": {
+    "$date": "2025-07-03T05:21:06.391Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-03T05:27:38.107Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68677dbe257a7ba4ae48a3a0"
+  },
+  "name": "izanamii098",
+  "email": "izanamii098@gmail.com",
+  "password": "gpgt6nxc",
+  "role": "user",
+  "image": "",
+  "wishlist": [],
+  "wallet": 0,
+  "createdAt": {
+    "$date": "2025-07-04T07:07:42.809Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-04T07:07:42.809Z"
+  },
+  "__v": 0
+}]

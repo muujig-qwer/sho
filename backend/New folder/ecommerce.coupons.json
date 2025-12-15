@@ -1,0 +1,57 @@
+[{
+  "_id": {
+    "$oid": "686381905fd8dcf8f0ceb0ca"
+  },
+  "code": "1",
+  "discount": 12,
+  "expires": {
+    "$date": "2025-07-09T00:00:00.000Z"
+  },
+  "assignedTo": [
+    "muujigmunhjin13@gmail.com"
+  ],
+  "categories": [
+    {
+      "$oid": "684f88df3756ab9fdd1a7804"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "686387d1edacb163512b5f55"
+  },
+  "code": "10",
+  "discount": 10,
+  "expires": {
+    "$date": "2025-07-10T00:00:00.000Z"
+  },
+  "assignedTo": [
+    "muujigmunhjin13@gmail.com"
+  ],
+  "categories": [
+    {
+      "$oid": "685a77b1a79b80fa8a74a637"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68638eededacb163512b5f7f"
+  },
+  "code": "11",
+  "discount": 1,
+  "expires": {
+    "$date": "2025-07-02T00:00:00.000Z"
+  },
+  "assignedTo": [
+    "muujigmunhjin13@gmail.com"
+  ],
+  "categories": [
+    {
+      "$oid": "685a77b1a79b80fa8a74a637"
+    }
+  ],
+  "__v": 0
+}]

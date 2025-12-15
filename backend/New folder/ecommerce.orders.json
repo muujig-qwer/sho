@@ -1,0 +1,274 @@
+[{
+  "_id": {
+    "$oid": "6864e6b762f371b1b47c1950"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "685a78b9a79b80fa8a74a67b"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "6864e6b762f371b1b47c1951"
+      }
+    },
+    {
+      "product": {
+        "$oid": "685ba1eb351e642bb82c6fde"
+      },
+      "quantity": 2,
+      "_id": {
+        "$oid": "6864e6b762f371b1b47c1952"
+      }
+    }
+  ],
+  "phone": "1010",
+  "note": "1010",
+  "location": "Энх тайвны өргөн чөлөө, 58, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 3475290,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": {
+    "code": "10",
+    "discount": 10,
+    "discountAmount": 83940
+  },
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-07-02T07:58:47.891Z"
+  },
+  "__v": 0,
+  "delivery": {
+    "$oid": "68661342e573f804c28410c1"
+  }
+},
+{
+  "_id": {
+    "$oid": "68663bf2fa706a18e2dca1ed"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "685bb3b7047b999fc7f18daa"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68663bf2fa706a18e2dca1ee"
+      }
+    },
+    {
+      "product": {
+        "$oid": "685ba1eb351e642bb82c6fde"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68663bf2fa706a18e2dca1ef"
+      }
+    }
+  ],
+  "phone": "99999999",
+  "note": "zxczxczxc 1234",
+  "location": "Д.Сүхбаатарын гудамж, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 3131033,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": null,
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-07-03T08:14:42.577Z"
+  },
+  "__v": 0,
+  "delivery": {
+    "$oid": "68661342e573f804c28410c1"
+  }
+},
+{
+  "_id": {
+    "$oid": "68664a002d5181d9565e1b9e"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "685d086b0dc9f10b848067c9"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68664a002d5181d9565e1b9f"
+      }
+    }
+  ],
+  "phone": "11111111",
+  "note": "112312haasd",
+  "location": "Д.Сүхбаатарын гудамж, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 58500,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": null,
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-07-03T09:14:40.600Z"
+  },
+  "__v": 0,
+  "delivery": {
+    "$oid": "68661342e573f804c28410c1"
+  }
+},
+{
+  "_id": {
+    "$oid": "68664d6dc5e000a66748390c"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "685d086b0dc9f10b848067c9"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68664d6dc5e000a66748390d"
+      }
+    }
+  ],
+  "phone": "123123123",
+  "note": "123123123",
+  "location": "Д.Сүхбаатарын гудамж, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 58500,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": null,
+  "status": "assigned",
+  "createdAt": {
+    "$date": "2025-07-03T09:29:17.267Z"
+  },
+  "__v": 0,
+  "delivery": {
+    "$oid": "68661342e573f804c28410c1"
+  }
+},
+{
+  "_id": {
+    "$oid": "68665e2ddbf2c7c0e7955e1c"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "68649dbd9110ea830821b764"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68665e2ddbf2c7c0e7955e1d"
+      }
+    }
+  ],
+  "phone": "10101",
+  "note": "01010",
+  "location": "Д.Сүхбаатарын гудамж, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 1619100,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": {
+    "code": "10",
+    "discount": 10,
+    "discountAmount": 179900
+  },
+  "status": "pending",
+  "createdAt": {
+    "$date": "2025-07-03T10:40:45.851Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68677c3c257a7ba4ae489f67"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "68649dbd9110ea830821b764"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "68677c3c257a7ba4ae489f68"
+      }
+    }
+  ],
+  "phone": "101010",
+  "note": "10101",
+  "location": "Д.Сүхбаатарын гудамж, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 1619100,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": {
+    "code": "10",
+    "discount": 10,
+    "discountAmount": 179900
+  },
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-07-04T07:01:16.110Z"
+  },
+  "__v": 0,
+  "delivery": {
+    "$oid": "68661342e573f804c28410c1"
+  }
+},
+{
+  "_id": {
+    "$oid": "686cdb305dc2b8a6201d530d"
+  },
+  "user": {
+    "$oid": "6854ea662d36dfa26d76577f"
+  },
+  "cartItems": [
+    {
+      "product": {
+        "$oid": "686b754da9a58cf07fd4d9d8"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "686cdb305dc2b8a6201d530e"
+      }
+    },
+    {
+      "product": {
+        "$oid": "686b7374c82c95e3db0f7fcf"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "686cdb305dc2b8a6201d530f"
+      }
+    }
+  ],
+  "phone": "1010",
+  "note": "10101010",
+  "location": "Бээжингийн гудамж, Бага Тойрог, Сүхбаатар, Улаанбаатар",
+  "totalPrice": 4717150,
+  "payWithWallet": true,
+  "payWithQr": false,
+  "coupon": null,
+  "status": "completed",
+  "createdAt": {
+    "$date": "2025-07-08T08:47:44.058Z"
+  },
+  "__v": 0,
+  "delivery": {
+    "$oid": "68661342e573f804c28410c1"
+  }
+}]

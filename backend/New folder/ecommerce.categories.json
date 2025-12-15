@@ -1,0 +1,268 @@
+[{
+  "_id": {
+    "$oid": "684f88df3756ab9fdd1a7804"
+  },
+  "name": "Эрэгтэй",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-16T03:00:47.067Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T03:00:47.067Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684f88e63756ab9fdd1a7807"
+  },
+  "name": "sneaker",
+  "parent": {
+    "$oid": "684f88df3756ab9fdd1a7804"
+  },
+  "createdAt": {
+    "$date": "2025-06-16T03:00:54.997Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T03:00:54.997Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684f88f13756ab9fdd1a780f"
+  },
+  "name": "leather",
+  "parent": {
+    "$oid": "684f88df3756ab9fdd1a7804"
+  },
+  "createdAt": {
+    "$date": "2025-06-16T03:01:05.886Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T03:01:05.886Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684f89363756ab9fdd1a7813"
+  },
+  "name": "sandals",
+  "parent": {
+    "$oid": "684f88df3756ab9fdd1a7804"
+  },
+  "createdAt": {
+    "$date": "2025-06-16T03:02:14.209Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T03:02:14.209Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fa4a93756ab9fdd1a7878"
+  },
+  "name": "Эмэгтэй",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-16T04:59:21.652Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T04:59:21.652Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fa4b73756ab9fdd1a787d"
+  },
+  "name": "sneakers",
+  "parent": {
+    "$oid": "684fa4a93756ab9fdd1a7878"
+  },
+  "createdAt": {
+    "$date": "2025-06-16T04:59:35.883Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T04:59:35.883Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fc15ee765e1b27c9daff7"
+  },
+  "name": "tshirt",
+  "parent": {
+    "$oid": "684f88df3756ab9fdd1a7804"
+  },
+  "createdAt": {
+    "$date": "2025-06-16T07:01:50.851Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T07:01:50.851Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fc20de765e1b27c9db00e"
+  },
+  "name": "Хүүхэд",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-16T07:04:45.970Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T07:04:45.970Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fc21be765e1b27c9db011"
+  },
+  "name": "shoes",
+  "parent": {
+    "$oid": "684fc20de765e1b27c9db00e"
+  },
+  "createdAt": {
+    "$date": "2025-06-16T07:04:59.280Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T07:04:59.280Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685a77b1a79b80fa8a74a637"
+  },
+  "name": "Цахилгаан бараа",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-24T10:02:25.687Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-24T10:02:25.687Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685b7811351e642bb82c6c4e"
+  },
+  "name": "Гар утас",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-25T04:16:17.286Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T04:16:17.286Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685b9428351e642bb82c6dff"
+  },
+  "name": "samsung",
+  "parent": {
+    "$oid": "685b7811351e642bb82c6c4e"
+  },
+  "createdAt": {
+    "$date": "2025-06-25T06:16:08.619Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T06:16:08.619Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685b943d351e642bb82c6e07"
+  },
+  "name": "iphone",
+  "parent": {
+    "$oid": "685b7811351e642bb82c6c4e"
+  },
+  "createdAt": {
+    "$date": "2025-06-25T06:16:29.805Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T06:16:29.805Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685bc3f4047b999fc7f191b5"
+  },
+  "name": "Аялал",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-25T09:40:04.949Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T09:40:04.949Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685cbe91dfba2c7e9821ccf8"
+  },
+  "name": "esport",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-26T03:29:21.302Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-26T03:29:21.302Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685d04b20dc9f10b84805fb1"
+  },
+  "name": "sport",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-26T08:28:34.220Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-26T08:28:34.220Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685d082a0dc9f10b84806747"
+  },
+  "name": "books",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-06-26T08:43:22.047Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-26T08:43:22.047Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693fca8825796bf998942256"
+  },
+  "name": "gg",
+  "parent": null,
+  "createdAt": {
+    "$date": "2025-12-15T08:44:56.438Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-15T08:44:56.438Z"
+  },
+  "__v": 0
+}]

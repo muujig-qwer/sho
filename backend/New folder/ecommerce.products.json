@@ -1,0 +1,643 @@
+[{
+  "_id": {
+    "$oid": "684fa54d3756ab9fdd1a7887"
+  },
+  "name": "Womens jordan",
+  "price": 10000,
+  "description": "emegtei sneaker",
+  "images": [
+    "https://images.unsplash.com/photo-1744812441866-80ff6acfebdf?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1744812441782-fe2b6fe235a2?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1651573091103-530884aa68ff?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1744812441887-8084826a2b04?w=400&h=400&fit=crop&crop=center"
+  ],
+  "category": {
+    "$oid": "684fa4b73756ab9fdd1a787d"
+  },
+  "sizes": [
+    "40",
+    "36",
+    "37",
+    "38"
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-16T05:02:05.757Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T05:02:05.757Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fc1e4e765e1b27c9db000"
+  },
+  "name": "Men's Tshirt",
+  "price": 100000,
+  "description": "eregtei tshirt",
+  "images": [
+    "https://plus.unsplash.com/premium_photo-1673356302067-aac3b545a362?w=400&h=400&fit=crop&crop=center",
+    "https://plus.unsplash.com/premium_photo-1673356301514-2cad91907f74?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1521498542256-5aeb47ba2b36?w=400&h=400&fit=crop&crop=center"
+  ],
+  "category": {
+    "$oid": "684fc15ee765e1b27c9daff7"
+  },
+  "sizes": [
+    "36",
+    "41",
+    "37",
+    "42"
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-16T07:04:04.571Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T07:04:04.571Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684fc29de765e1b27c9db01a"
+  },
+  "name": "Хүүхэдийн Vans",
+  "price": 50000,
+  "description": "tailbar 1",
+  "images": [
+    "https://images.unsplash.com/photo-1605382165091-443eff32caf5?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1584564515943-b54cbb61836b?w=400&h=400&fit=crop&crop=center",
+    "https://plus.unsplash.com/premium_photo-1687936161683-394d3f7f59e2?w=400&h=400&fit=crop&crop=center",
+    "https://images.unsplash.com/photo-1573309463328-ec43614b3def?w=400&h=400&fit=crop&crop=center"
+  ],
+  "category": {
+    "$oid": "684fc21be765e1b27c9db011"
+  },
+  "sizes": [
+    "40",
+    "35",
+    "36",
+    "37"
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-16T07:07:09.050Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-16T07:07:09.050Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685a78b9a79b80fa8a74a67b"
+  },
+  "name": "Dreame R20",
+  "price": 1399000,
+  "description": "Үйлдэл: Тоос сорох Хүчин чадал: 570W Сорох хүч: 190AW Ажиллах хугацаа: 90мин Моторын эргэлт: 150.000 Савны хэмжээ: 0.6Л",
+  "images": [
+    "https://www.freshpack.mn/_next/image?url=https%3A%2F%2Fcdnd.techpack.mn%2Fuploads%2F7qgyQAOtkNsfbYzYRuuct&w=1920&q=75"
+  ],
+  "category": {
+    "$oid": "685a77b1a79b80fa8a74a637"
+  },
+  "sizes": [],
+  "discount": 40,
+  "discountPrice": 839400,
+  "discountExpires": {
+    "$date": "2025-06-26T10:06:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 9,
+      "_id": {
+        "$oid": "685a78b9a79b80fa8a74a67c"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 9,
+      "_id": {
+        "$oid": "685a78b9a79b80fa8a74a67d"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-24T10:06:49.742Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-24T10:06:49.742Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685ba1eb351e642bb82c6fde"
+  },
+  "name": "Samsung - Galaxy S25 Ultra 256GB - Titanium Black (Verizon)",
+  "price": 1599900,
+  "description": "Staying in the moment is easier than ever with the all-new Galaxy S25 Ultra. Its intelligent AI transforms into your own virtual assistant that evolves with you to work better for you. Let’s say you want to enjoy a night out with friends but don’t have time to plan. Just ask Galaxy S25 Ultra to invite your friends to the nearest bowling lounge tonight. Your phone will find the info and text it to them. You don’t need to slow down your speech or speak like a robot —just talk to your phone naturally, and it will understand. While you’re out rolling spares, Night Video brings out the details in every moment —even in low light —while Audio Eraser makes it easy to reduce distracting noises, like those pins crashing one lane over. Galaxy S25 Ultra also keeps up with your schedule and provides the weather forecast for your night, allowing you to stay a step ahead and adjust plans on the fly. With a phone as evolved as Galaxy S25 Ultra, you don’t have to sweat the small stuff —it’s handled intelligently.",
+  "images": [
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6612/6612779_sd.jpg;maxHeight=1080;maxWidth=900?format=webp",
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/0cb0225f-8887-42e4-a58a-702a90db9bc6.jpg;maxHeight=1080;maxWidth=900?format=webp",
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/d7672a3f-ebce-4e5b-85ce-22fb68a67037.jpg;maxHeight=1080;maxWidth=900?format=webp",
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/d29c49d6-43c6-43a9-8c41-816142ae21f2.jpg;maxHeight=1080;maxWidth=900?format=webp"
+  ],
+  "category": {
+    "$oid": "685b9428351e642bb82c6dff"
+  },
+  "sizes": [],
+  "discount": 15,
+  "discountPrice": 1359915,
+  "discountExpires": {
+    "$date": "2025-06-27T07:13:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 10,
+      "_id": {
+        "$oid": "685ba1eb351e642bb82c6fdf"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 9,
+      "_id": {
+        "$oid": "685ba1eb351e642bb82c6fe0"
+      }
+    },
+    {
+      "color": "#FF0000",
+      "quantity": 10,
+      "_id": {
+        "$oid": "685ba1eb351e642bb82c6fe1"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-25T07:14:51.471Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T07:14:51.471Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685bb3b7047b999fc7f18daa"
+  },
+  "name": "Apple - iPhone 16 Pro 256GB - Apple Intelligence - Black Titanium (AT&T)",
+  "price": 2159900,
+  "description": "iPhone 16 Pro. Built for Apple Intelligence. Featuring a stunning titanium design. Camera Control. 4K 120 fps Dolby Vision. And A18 Pro chip.",
+  "images": [
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/74ac07a0-2f0e-4c33-8a32-654c4b2b6209.jpg;maxHeight=1080;maxWidth=900?format=webp",
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/3efcd0bc-80aa-48e5-8a47-845628a605b0.jpg;maxHeight=1080;maxWidth=900?format=webp",
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/ee6671f7-c7ce-4bf3-84d4-5a882ef7fa52.jpg;maxHeight=1080;maxWidth=900?format=webp"
+  ],
+  "category": {
+    "$oid": "685b943d351e642bb82c6e07"
+  },
+  "sizes": [],
+  "discount": 18,
+  "discountPrice": 1771118,
+  "discountExpires": {
+    "$date": "2025-06-30T08:29:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 10,
+      "_id": {
+        "$oid": "685bb3b7047b999fc7f18dab"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 9,
+      "_id": {
+        "$oid": "685bb3b7047b999fc7f18dac"
+      }
+    },
+    {
+      "color": "#0074D9",
+      "quantity": 8,
+      "_id": {
+        "$oid": "685bb3b7047b999fc7f18dad"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-25T08:30:47.158Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T08:30:47.158Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685bc4f3047b999fc7f191db"
+  },
+  "name": "Virgo-S Luxury Glamping Tent",
+  "price": 2005000,
+  "description": "Multi-functional Combination Portable Outdoor Camping Dome Waterproof Cotton Fabric Air Column Inflatable Tent for Family Travel",
+  "images": [
+    "https://s.alicdn.com/@sc04/kf/H388f0e4442b445299eb42a156934dd8aT.png_720x720q50.jpg",
+    "https://s.alicdn.com/@sc04/kf/He509613388b84019ade04a0449a1d255R.png_720x720q50.jpg"
+  ],
+  "category": {
+    "$oid": "685bc3f4047b999fc7f191b5"
+  },
+  "sizes": [],
+  "discount": 0,
+  "discountPrice": 2005000,
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 50,
+      "_id": {
+        "$oid": "685bc4f3047b999fc7f191dc"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 19,
+      "_id": {
+        "$oid": "685bc4f3047b999fc7f191dd"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-25T09:44:19.114Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-25T09:44:19.114Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685cbef7dfba2c7e9821cd20"
+  },
+  "name": "Keychron Q1 Max",
+  "price": 629000,
+  "description": "Холболтын төрөл: Утасгүй Switch төрөл: Brown Switch Холболтын технологи: Wireless 2.4GHz, Bluetooth 5.1 Арын гэрэл: RGB гэрэлтэй",
+  "images": [
+    "https://www.freshpack.mn/_next/image?url=https%3A%2F%2Fcdnd.techpack.mn%2Fuploads%2FST_wMKduUDRpVsTO3yAzU&w=1920&q=75"
+  ],
+  "category": {
+    "$oid": "685cbe91dfba2c7e9821ccf8"
+  },
+  "sizes": [],
+  "discount": 0,
+  "discountPrice": 629000,
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 2,
+      "_id": {
+        "$oid": "685cbef7dfba2c7e9821cd21"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 2,
+      "_id": {
+        "$oid": "685cbef7dfba2c7e9821cd22"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-26T03:31:03.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-26T03:31:03.542Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685d05320dc9f10b8480602d"
+  },
+  "name": "Wilson NCAA Replica",
+  "price": 159900,
+  "description": "Wilson NCAA Evo NXT Replica Basketball - Size 6 - 28.5\", Orange\r\nIndoor/Outdoor: Built to dominate both basketball environments\r\nSeason-Long Durability: A premium core construction offers exceptional durability and shape retention, game after game\r\nConsistent Control: Laid-in Composite Channels provide a consistent texture and grip over the entire ball for unparalleled control\r\nSizes: Color variations available in 29.5\" (boys age 12 and up) and 28.5\" (girls age 9 and up, and boys age 9-11)\r\nNCAA Replica: Feel what the players feel every March",
+  "images": [
+    "https://m.media-amazon.com/images/I/81kgGDfNi0L._AC_SX679_.jpg",
+    "https://m.media-amazon.com/images/I/81HJjt9PMPL._AC_SX679_.jpg"
+  ],
+  "category": {
+    "$oid": "685d04b20dc9f10b84805fb1"
+  },
+  "sizes": [],
+  "discount": 0,
+  "discountPrice": 159900,
+  "stock": [
+    {
+      "color": "#FFDC00",
+      "quantity": 6,
+      "_id": {
+        "$oid": "685d05320dc9f10b8480602e"
+      }
+    },
+    {
+      "color": "#0074D9",
+      "quantity": 50,
+      "_id": {
+        "$oid": "685d05320dc9f10b8480602f"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-06-26T08:30:42.259Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-26T08:30:42.259Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685d086b0dc9f10b848067c9"
+  },
+  "name": "Цойлогсод",
+  "price": 65000,
+  "description": "Хүмүүсийн зарим нь Еврейг биширч, үлдсэн хэсэг нь үзэн яддаг. Гэвч цэлмэг ухаантай хэнбугай ч Еврейчүүдийг дэлхий дээрх хамгийн аугаа цойлон тасарсан үндэстэн гэдэг үнэнийг няцааж чадахгүй. Хэдийгээр энэ ном бүхэлдээ хувь хүний хөгжлийн талаар бичигдсэн боловч эндээс улс орны хөгжлийн талаарх олон гайхалтай санааг олж харах болно. Маш цөөхөн тохиолдолд ном хүний амьдралыг өөрчилдөг. Энэ номонд тийм хүч бий.",
+  "images": [
+    "https://book.mn/timthumb.php?src=https://book.mn/uploads/products/1632278783-69607627.jpg&w=400&h=500&zc=2&q=90&s=1"
+  ],
+  "category": {
+    "$oid": "685d082a0dc9f10b84806747"
+  },
+  "sizes": [],
+  "discount": 10,
+  "discountPrice": 58500,
+  "discountExpires": {
+    "$date": "2025-06-27T08:43:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 0,
+      "_id": {
+        "$oid": "685d086b0dc9f10b848067ca"
+      }
+    }
+  ],
+  "comments": [
+    {
+      "author": "1",
+      "comment": "1",
+      "rating": 5,
+      "date": {
+        "$date": "2025-07-03T09:32:54.267Z"
+      },
+      "_id": {
+        "$oid": "68664e46c5e000a667483b09"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-06-26T08:44:27.036Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-03T09:32:54.535Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "68649dbd9110ea830821b764"
+  },
+  "name": "D10 Plus Gen 2",
+  "price": 1799000,
+  "description": "Роботын хэмжээ: 350 x 350 x 96.3mm Суурны хэмжээ: 298 x 406 x 427mm Роботын жин: 3.23kg Суурны жин: 3.75kg Сорох хүч: 6,000Pa батарей: 5,200mAh Усны танк: 150ml Хог хадгалав сав: 4Л Тоосны танк: 400мл Дуу хоолойн удирдлага: Дэмжинэ Мэдрэгчийн тоо: 24 Саад давах: 2см Лазер мэдрэгч: Smart Pathfinder Ажиллах хугацаа: 285мин Шүүрээ өргөх шинэ технологи",
+  "images": [
+    "https://www.freshpack.mn/_next/image?url=https%3A%2F%2Fcdnd.techpack.mn%2Fuploads%2Fe2kSWaJEK5g7gZgOOqIFc&w=1920&q=75"
+  ],
+  "category": {
+    "$oid": "685a77b1a79b80fa8a74a637"
+  },
+  "sizes": [],
+  "discount": 0,
+  "discountPrice": 1799000,
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 8,
+      "_id": {
+        "$oid": "68649dbd9110ea830821b765"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 11,
+      "_id": {
+        "$oid": "68649dbd9110ea830821b766"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-07-02T02:47:25.972Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-04T07:02:39.176Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "686b6fb18ca1b1c342b362c4"
+  },
+  "name": "ASUS Vivobook S 15.6",
+  "price": 5139000,
+  "description": "AMD Ryzen AI 9 HX 370 with Radeon 890M Graphics\r\nCopilot + (50 TOPS)\r\n32GB DDR5 Memory & 1TB PCIe Gen 4 SSD\r\n3K (2880 x 1620) ASUS OLED Display\r\nWindows 11 Home\r\nUp to 17 Hour Battery Life with USB C Charging Port\r\nLightweight at 3.31lbs",
+  "images": [
+    "https://c1.neweggimages.com/productimage/nb1280/34-236-614-01.png",
+    "https://c1.neweggimages.com/productimage/nb1280/34-236-614-04.png",
+    "https://c1.neweggimages.com/productimage/nb1280/34-236-614-08.png",
+    "https://c1.neweggimages.com/productimage/nb1280/34-236-614-10.png",
+    "https://c1.neweggimages.com/productimage/nb1280/34-236-614-14.jpg"
+  ],
+  "category": {
+    "$oid": "685a77b1a79b80fa8a74a637"
+  },
+  "sizes": [],
+  "discount": 10,
+  "discountPrice": 4625100,
+  "discountExpires": {
+    "$date": "2025-07-10T06:55:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 10,
+      "_id": {
+        "$oid": "686b6fb18ca1b1c342b362c5"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 10,
+      "_id": {
+        "$oid": "686b6fb18ca1b1c342b362c6"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-07-07T06:56:49.846Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-07T06:56:49.846Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "686b724dc82c95e3db0f7f0f"
+  },
+  "name": "AMD - Ryzen 7 9700X",
+  "price": 5230000,
+  "description": "✔️AMD - Ryzen 7 9700X \r\n\r\n✔️MSI - PRO B650M-A D5 / AMD /\r\n\r\n✔️Apacer - NOX DDR5 16x2 32GB 6000mhz\r\n\r\n✔️DeepCool Assassin IV - Black\r\n\r\n✔️Phanteks ECLIPSE G400A - Satin Black Fan x4\r\n\r\n✔️Crucial - P310 1TB PCIe Gen4 NVMe 2280 M.2 SSD up to 7,100MB/s.\r\n\r\n✔️DeepCool PL750D 750W 80 Plus Bronze Certified\r\n\r\n✔️ASUS - ATS RX 9070 GRE MEGALODON 12GB Radeon\r\n\r\n🎁 Windows license key\r\n\r\n🎁 1 Year Warranty\r\n\r\n🎁 Free assembly\r\n\r\n🎁 Hitech MousePad\r\n\r\n🎁 Free Shipping\r\n\r\n➕Цаг хэмнэх PC Care+ үйлчилгээнд хамрагдаад компьютероо бүрэн цэвэрлүүлэх боломжтой.\r\n\r\n➕Бидний санал болгож буй LVL Up үйлчилгээний давуу талыг ашиглаад part-уудаа шинэчилж сайжруулах боломжтой.",
+  "images": [
+    "https://www.hitech.mn/_next/image?url=https%3A%2F%2Fhitech-bc-main.s3.ap-southeast-1.amazonaws.com%2F030f716f-9e19-4633-b262-75afb82360ad.webp&w=1920&q=75",
+    "https://www.hitech.mn/_next/image?url=https%3A%2F%2Fhitech-bc-main.s3.ap-southeast-1.amazonaws.com%2Fb4030bd6-5424-44be-b95d-bdc6605d9fb3.jpg&w=1920&q=75"
+  ],
+  "category": {
+    "$oid": "685a77b1a79b80fa8a74a637"
+  },
+  "sizes": [],
+  "discount": 15,
+  "discountPrice": 4445500,
+  "discountExpires": {
+    "$date": "2025-07-09T07:07:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 10,
+      "_id": {
+        "$oid": "686b724dc82c95e3db0f7f10"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 10,
+      "_id": {
+        "$oid": "686b724dc82c95e3db0f7f11"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-07-07T07:07:57.939Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-07T07:07:57.939Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "686b7374c82c95e3db0f7fcf"
+  },
+  "name": "HUAWEI Mate XT ULTIMATE DESIGN",
+  "price": 4999000,
+  "description": "\r\nScreen Size\r\nsingle screen: 6.4 inches\r\n\r\ndual screen: 7.9 inches\r\n\r\ntriple screen: 10.2 inches\r\n\r\n*With a rounded corners design on the display, the diagonal length of the single screen is 6.4 inches, the diagonal length of the dual screen is 7.9 inches, and the diagonal length of the triple screen is 10.2 inches when measured according to the standard rectangle, the actual viewable area is slightly smaller.\r\n\r\nColour\r\n1.07 billion colours",
+  "images": [
+    "https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/admin-image/phones/mate-xt-ultimate-design/specs/red.png",
+    "https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/admin-image/phones/mate-xt-ultimate-design/specs/blank.png"
+  ],
+  "category": {
+    "$oid": "685b9428351e642bb82c6dff"
+  },
+  "sizes": [],
+  "discount": 15,
+  "discountPrice": 4249150,
+  "discountExpires": {
+    "$date": "2025-07-17T07:11:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 4,
+      "_id": {
+        "$oid": "686b7374c82c95e3db0f7fd0"
+      }
+    },
+    {
+      "color": "#FF0000",
+      "quantity": 5,
+      "_id": {
+        "$oid": "686b7374c82c95e3db0f7fd1"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-07-07T07:12:52.274Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-08T08:48:25.148Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "686b754da9a58cf07fd4d9d8"
+  },
+  "name": "Huawei FreeBuds Pro 4",
+  "price": 520000,
+  "description": "【Dual-driver True Sound】HWA Lossless and Hi-Res Wireless Audio certifications mean that this sterling sound really isn't too good to be true.\r\n【Stable & Clear Calls 】Enjoy ultimate privacy wherever you make calls are crystal clear, even at wind speeds of up to 10 m/s or in situations with noise levels of up to 100 dB. Such as concerts, KTVs, or even the metro.\r\n【Intelligent Dynamic ANC】You can customise your fit and listening experience while keeping noise at bay—even on flights or high-speed trains—with the help of intelligent dynamic ANC.\r\n【Silver String Design】The laser-engraved handle, a homage to the elegance of string instruments, and delight in the scintillating sounds. Ceramic DECO features laser-engraved silver strings with a glossy finish that's comfortable to touch.\r\n【Head Motion Controls】Incoming calls, nod to answer. Answer or reject incoming calls hands-free, just by nodding or shaking your head.",
+  "images": [
+    "https://m.media-amazon.com/images/I/616dIiP+2NL._AC_SX466_.jpg",
+    "https://m.media-amazon.com/images/I/612N50lBI+L._AC_SX466_.jpg",
+    "https://m.media-amazon.com/images/I/61mr68w1VCL._AC_SX466_.jpg"
+  ],
+  "category": {
+    "$oid": "685b943d351e642bb82c6e07"
+  },
+  "sizes": [],
+  "discount": 10,
+  "discountPrice": 468000,
+  "discountExpires": {
+    "$date": "2025-07-19T07:20:00.000Z"
+  },
+  "stock": [
+    {
+      "color": "#000000",
+      "quantity": 1,
+      "_id": {
+        "$oid": "686b754da9a58cf07fd4d9d9"
+      }
+    },
+    {
+      "color": "#FFFFFF",
+      "quantity": 2,
+      "_id": {
+        "$oid": "686b754da9a58cf07fd4d9da"
+      }
+    }
+  ],
+  "comments": [],
+  "createdAt": {
+    "$date": "2025-07-07T07:20:45.276Z"
+  },
+  "updatedAt": {
+    "$date": "2025-07-08T08:48:25.136Z"
+  },
+  "__v": 0
+}]

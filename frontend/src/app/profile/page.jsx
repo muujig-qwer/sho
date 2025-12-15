@@ -1,11 +1,48 @@
 'use client'
 import { useSession } from "next-auth/react"
+import { useAuth } from "@/context/AuthContext"
+import { useEffect, useState } from "react"
+import axios from "axios"
 import Link from "next/link"
 
 export default function ProfilePage() {
   const { data: session, status } = useSession()
+  const { user: authUser, loading: authLoading } = useAuth()
+  const [userData, setUserData] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  if (status === "loading") {
+  // Session ЭСВЭЛ localStorage token-оор нэвтэрсэн эсэхийг шалгах
+  const isLoggedIn = !!session || !!authUser
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (session) {
+        // next-auth session-аас авах
+        setUserData(session.user)
+        setLoading(false)
+      } else if (authUser) {
+        // localStorage token ашиглан backend-аас авах
+        try {
+          const res = await axios.get('http://localhost:5000/api/auth/profile', {
+            headers: { Authorization: `Bearer ${authUser.token}` }
+          })
+          setUserData(res.data)
+          setLoading(false)
+        } catch (err) {
+          console.error('Failed to fetch user data:', err)
+          setLoading(false)
+        }
+      } else {
+        setLoading(false)
+      }
+    }
+
+    if (status !== "loading" && !authLoading) {
+      fetchUserData()
+    }
+  }, [session, status, authUser, authLoading])
+
+  if (status === "loading" || authLoading || loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -13,7 +50,7 @@ export default function ProfilePage() {
     )
   }
 
-  if (!session) {
+  if (!isLoggedIn) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <p className="text-lg text-gray-600 mb-4">Профайл харахын тулд нэвтэрнэ үү.</p>
@@ -62,13 +99,13 @@ export default function ProfilePage() {
       <section className="flex-1 bg-white rounded-xl shadow p-8 flex flex-col items-center">
         <div className="relative mb-6">
           <img
-            src={session.user.image || '/default-avatar.png'}
+            src={userData?.image || '/default-avatar.png'}
             alt="Profile"
             className="w-32 h-32 rounded-full object-cover border-4 border-blue-200 shadow"
           />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">{session.user.name}</h2>
-        <p className="text-gray-500 mb-6">{session.user.email}</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-1">{userData?.name || 'Хэрэглэгч'}</h2>
+        <p className="text-gray-500 mb-6">{userData?.email || ''}</p>
         <button
           onClick={() => window.location.href = '/profile/edit'}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition shadow"

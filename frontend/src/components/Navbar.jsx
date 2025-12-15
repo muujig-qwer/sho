@@ -34,6 +34,7 @@ import {
   FaLeaf,
 } from "react-icons/fa";
 import { useSession, signOut } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 
 function CategoryIcon({ icon: Icon, label, href, isActive = false }) {
@@ -54,12 +55,15 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const { user, logout: authLogout } = useAuth();
   const { wishlist } = useWishlist();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  // Session ЭСВЭЛ localStorage token-оор нэвтэрсэн эсэхийг шалгах
+  const isLoggedIn = !!session || !!user;
   const isAdmin = session?.user?.email === "muujig165@gmail.com";
   const userName = session?.user?.name || "";
   const userRole = session?.role || (session?.user?.role ?? "");
@@ -73,6 +77,8 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
+    // Хоёр аргаар logout хийх: next-auth болон localStorage
+    authLogout();
     signOut({ callbackUrl: "/login" });
   };
 
@@ -163,7 +169,7 @@ export default function Navbar() {
               <div className="flex items-center gap-3">
                 {/* Desktop Icons */}
                 <div className="hidden md:flex items-center gap-3">
-                  {session ? (
+                  {isLoggedIn ? (
                     <>
                       {!isAdmin && (
                         <>
@@ -229,7 +235,7 @@ export default function Navbar() {
                   <button className="p-2 text-gray-600 hover:text-green-600 transition-colors">
                     <FaSearch className="h-5 w-5" />
                   </button>
-                  {session && (
+                  {isLoggedIn && (
                     <Link href="/cart" className="p-2 text-gray-600 hover:text-green-600 transition-colors">
                       <FaShoppingCart className="h-5 w-5" />
                     </Link>
@@ -301,7 +307,7 @@ export default function Navbar() {
 
             {/* Mobile Navigation */}
             <div className="space-y-4">
-              {session ? (
+              {isLoggedIn ? (
                 <>
                   <Link
                     href="/profile"

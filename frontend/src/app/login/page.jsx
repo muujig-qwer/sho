@@ -2,13 +2,15 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { useCart } from '@/context/CartContext'  // Таны CartContext байрлалын дагуу өөрчлөх
+import { useCart } from '@/context/CartContext'
+import { useAuth } from '@/context/AuthContext'
 import { signIn, useSession } from "next-auth/react"
 
 export default function LoginPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const { setUserId } = useCart()  // setUserId-г авах
+  const { setUserId } = useCart()
+  const { login: authLogin, user } = useAuth()
 
   const [step, setStep] = useState(1)
   const [email, setEmail] = useState('')
@@ -16,11 +18,12 @@ export default function LoginPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (status === "loading") return // Session ачааллаж дуусаагүй бол юу ч хийхгүй
-    if (session) {
+    if (status === "loading") return
+    // Хэрэв session ЭСВЭЛ AuthContext user байвал homepage рүү шилжих
+    if (session || user) {
       router.push("/")
     }
-  }, [session, status])
+  }, [session, status, user, router])
 
   const handleEmailSubmit = (e) => {
     e.preventDefault()
@@ -40,12 +43,14 @@ export default function LoginPage() {
         password,
       })
 
-      localStorage.setItem('token', res.data.token)
-      localStorage.setItem('userId', res.data.user._id)
+      // AuthContext болон localStorage-д token хадгалах
+      authLogin(res.data.token, res.data.user._id)
+      setUserId(res.data.user._id)
 
-      setUserId(res.data.user._id)  // ЭНЭГЭЭР context-д userId-г шинэчлэх
-
-      router.push('/')
+      // State шинэчлэгдэхэд бага зэрэг хугацаа өгөхийн тулд delay
+      setTimeout(() => {
+        router.push('/')
+      }, 100)
     } catch (err) {
       setError('Нэвтрэх үед алдаа гарлаа')
     }

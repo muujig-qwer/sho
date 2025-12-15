@@ -1,6 +1,7 @@
 'use client'
 import './globals.css'
 import { SessionProvider } from "next-auth/react"
+import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
 import { WishlistProvider } from "@/context/WishlistContext";
 import { usePathname } from 'next/navigation'
@@ -18,13 +19,15 @@ export default function RootLayout({ children }) {
       </head>
       <body className="font-montserrat bg-red-100">
         <SessionProvider>
-          <CartProvider>
-            <WishlistProvider>
-              {!hideNavbar && <Navbar />}
-              <main>{children}</main>
-              <Footer />
-            </WishlistProvider>
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                {!hideNavbar && <Navbar />}
+                <main>{children}</main>
+                <Footer />
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
         </SessionProvider>
       </body>
     </html>
